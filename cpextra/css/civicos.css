@@ -1,0 +1,416 @@
+.version.civicos /* version checker */
+{
+	color: #0000F7;
+	background-color: #6E8F24;
+}
+
+.html
+{
+	background-color: #1C1F80;
+	background: -webkit-gradient(linear, center top, center bottom, from(#1C1F80),color-stop(100%, #FFFF00));
+	background: -webkit-linear-gradient(top,#1C1F80 ,#FFFF00 100%);
+	background: -o-linear-gradient(top,#1C1F80 ,#FFFF00 100%);
+	background: linear-gradient(to bottom,#1C1F80 ,#FFFF00 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#FF1C1F80, endColorstr=#FFFFFF00, GradientType=0);
+	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr='#FF1C1F80', endColorstr='#FFFFFF00', GradientType=0)";
+}
+
+#page
+{
+	z-index: 1;
+	width: 960px;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	-khtml-border-radius: 10px;
+	border-radius: 10px;
+	-pie-box-shadow: none;
+	-moz-box-shadow: none;
+	-webkit-box-shadow: none;
+	box-shadow: none;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+._page.f3s_top
+{
+	background-image: url("../images/page-sprite2.png");
+	width: 960px;
+	overflow: hidden;
+	height: 17px;
+	background-position: left top;
+}
+
+._page.f3s_mid
+{
+	background-image: url("../images/page-sprite2.png");
+	overflow: visible;
+	background-position: -960px top;
+	width: 960px;
+	min-height: 468px;
+}
+
+._page.f3s_bot
+{
+	background-image: url("../images/page-sprite2.png");
+	width: 960px;
+	overflow: visible;
+	height: 15px;
+	background-position: -1920px top;
+}
+
+#page_position_content
+{
+	padding-top: 12px;
+	padding-bottom: 46px;
+}
+
+#menuu296
+{
+	z-index: 5;
+	width: 960px;
+}
+
+#u297
+{
+	width: 190px;
+	min-height: 36px;
+	margin-right: -10000px;
+}
+
+#u298
+{
+	width: 190px;
+	padding-bottom: 19px;
+}
+
+#u298:hover
+{
+	margin: 0px;
+}
+
+#u298:active
+{
+	margin: 0px;
+}
+
+#u300-4
+{
+	width: 190px;
+	min-height: 17px;
+}
+
+#u298:hover #u300-4
+{
+	padding-top: 0px;
+	padding-bottom: 0px;
+	min-height: 17px;
+	margin: 0px;
+}
+
+#u298:active #u300-4
+{
+	padding-top: 0px;
+	padding-bottom: 0px;
+	min-height: 17px;
+	margin: 0px;
+}
+
+#u320
+{
+	width: 190px;
+	min-height: 36px;
+	margin-right: -10000px;
+	left: 192px;
+}
+
+#u323
+{
+	width: 190px;
+	padding-bottom: 19px;
+}
+
+#u298.MuseMenuActive,#u323:hover
+{
+	margin: 0px;
+}
+
+#u323:active
+{
+	margin: 0px;
+}
+
+#u325-4
+{
+	width: 190px;
+	min-height: 17px;
+}
+
+#u298.MuseMenuActive #u300-4,#u323:hover #u325-4
+{
+	padding-top: 0px;
+	padding-bottom: 0px;
+	min-height: 17px;
+	margin: 0px;
+}
+
+#u323:active #u325-4
+{
+	padding-top: 0px;
+	padding-bottom: 0px;
+	min-height: 17px;
+	margin: 0px;
+}
+
+#u337
+{
+	width: 190px;
+	min-height: 36px;
+	margin-right: -10000px;
+	left: 384px;
+}
+
+#u340
+{
+	width: 190px;
+	padding-bottom: 19px;
+}
+
+#u323.MuseMenuActive,#u340:hover
+{
+	margin: 0px;
+}
+
+#u340:active
+{
+	margin: 0px;
+}
+
+#u343-4
+{
+	width: 190px;
+	min-height: 17px;
+}
+
+#u323.MuseMenuActive #u325-4,#u340:hover #u343-4
+{
+	padding-top: 0px;
+	padding-bottom: 0px;
+	min-height: 17px;
+	margin: 0px;
+}
+
+#u340:active #u343-4
+{
+	padding-top: 0px;
+	padding-bottom: 0px;
+	min-height: 17px;
+	margin: 0px;
+}
+
+#u344
+{
+	width: 191px;
+	min-height: 36px;
+	margin-right: -10000px;
+	left: 576px;
+}
+
+#u345
+{
+	width: 191px;
+	padding-bottom: 19px;
+}
+
+#u340.MuseMenuActive,#u345:hover
+{
+	margin: 0px;
+}
+
+#u345:active
+{
+	margin: 0px;
+}
+
+#u346-4
+{
+	width: 191px;
+	min-height: 17px;
+}
+
+#u340.MuseMenuActive #u343-4,#u345:hover #u346-4
+{
+	padding-top: 0px;
+	padding-bottom: 0px;
+	min-height: 17px;
+	margin: 0px;
+}
+
+#u345:active #u346-4
+{
+	padding-top: 0px;
+	padding-bottom: 0px;
+	min-height: 17px;
+	margin: 0px;
+}
+
+#u351
+{
+	width: 191px;
+	min-height: 36px;
+	margin-right: -10000px;
+	left: 769px;
+}
+
+#u352
+{
+	width: 191px;
+	padding-bottom: 19px;
+}
+
+#u345.MuseMenuActive,#u352:hover
+{
+	margin: 0px;
+}
+
+#u352:active
+{
+	margin: 0px;
+}
+
+#u352.MuseMenuActive
+{
+	margin: 0px;
+}
+
+#u353-4
+{
+	width: 191px;
+	min-height: 17px;
+}
+
+#u345.MuseMenuActive #u346-4,#u352:hover #u353-4
+{
+	padding-top: 0px;
+	padding-bottom: 0px;
+	min-height: 17px;
+	margin: 0px;
+}
+
+#u352:active #u353-4
+{
+	padding-top: 0px;
+	padding-bottom: 0px;
+	min-height: 17px;
+	margin: 0px;
+}
+
+#u352.MuseMenuActive #u353-4
+{
+	padding-top: 0px;
+	padding-bottom: 0px;
+	min-height: 17px;
+	margin: 0px;
+}
+
+#ppu981-4
+{
+	width: 0.01px;
+	margin-left: 10px;
+	margin-top: 9px;
+}
+
+#pu981-4
+{
+	width: 0.01px;
+	padding-bottom: 1px;
+	margin-right: -10000px;
+	margin-top: 55px;
+}
+
+#u981-4
+{
+	z-index: 36;
+	width: 291px;
+	min-height: 44px;
+	background-color: transparent;
+	color: #FFFFFF;
+	position: relative;
+}
+
+#u986-3
+{
+	z-index: 40;
+	width: 61px;
+	background-color: transparent;
+	margin-left: 93px;
+	position: relative;
+}
+
+#u994
+{
+	z-index: 65;
+	width: 150px;
+	background-color: transparent;
+	-webkit-transform: matrix(0.8746,-0.4848,0.4848,0.8746,-36,48);
+	-ms-transform: matrix(0.8746,-0.4848,0.4848,0.8746,-36,48);
+	-o-transform: matrix(0.8746,-0.4848,0.4848,0.8746,-36,48);
+	transform: matrix(0.8746,-0.4848,0.4848,0.8746,-36,48);
+	margin-left: 93px;
+	margin-top: 64px;
+	margin-bottom: 25px;
+	position: relative;
+}
+
+#u295-3
+{
+	z-index: 2;
+	width: 5px;
+	margin-right: -10000px;
+	margin-top: 279px;
+	left: 851px;
+}
+
+#u987-20
+{
+	z-index: 43;
+	width: 547px;
+	min-height: 226px;
+	background-color: transparent;
+	position: relative;
+	margin-right: -10000px;
+	left: 363px;
+}
+
+#u987-2,#u987-3,#u987-5,#u987-7,#u987-9,#u987-11,#u987-13,#u987-15,#u987-17
+{
+	color: #E5FF3E;
+}
+
+#u988
+{
+	z-index: 63;
+	width: 275px;
+	background-color: transparent;
+	-webkit-transform: matrix(0.866,0.5,-0.5,0.866,60,-58);
+	-ms-transform: matrix(0.866,0.5,-0.5,0.866,60,-58);
+	-o-transform: matrix(0.866,0.5,-0.5,0.866,60,-58);
+	transform: matrix(0.866,0.5,-0.5,0.866,60,-58);
+	position: relative;
+	margin-right: -10000px;
+	margin-top: 164px;
+	left: 602px;
+}
+
+body
+{
+	position: relative;
+	min-width: 960px;
+	padding-top: 36px;
+	padding-bottom: 36px;
+}
+
+#page .verticalspacer
+{
+	clear: both;
+}
+

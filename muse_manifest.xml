@@ -1,0 +1,82 @@
+<manifest alg="2" build="30" opt="false" iceEnabled="true">
+  <folder name="css">
+    <file name="site_global.css" crc="3983832653"/>
+    <file name="master_a-p_gina-maestra.css" crc="136955680" ref="estudiantes:sociales:culturales:civicos:eventos:docestes:index:deportivos:servicios:registros"/>
+    <file name="master_quienes-somos.css" crc="185303192" ref="quienes-somos:contactenos"/>
+    <file name="estudiantes.css" crc="3904086209" ref="estudiantes"/>
+    <file name="sociales.css" crc="3768338489" ref="sociales"/>
+    <file name="culturales.css" crc="3904086209" ref="culturales"/>
+    <file name="civicos.css" crc="3904086209" ref="civicos"/>
+    <file name="quienes-somos.css" crc="3836141101" ref="quienes-somos"/>
+    <file name="eventos.css" crc="3950802899" ref="eventos"/>
+    <file name="docestes.css" crc="3904086209" ref="docestes"/>
+    <file name="index.css" crc="365737113" ref="index"/>
+    <file name="deportivos.css" crc="3904086209" ref="deportivos"/>
+    <file name="servicios.css" crc="340079148" ref="servicios"/>
+    <file name="registros.css" crc="3855161422" ref="registros"/>
+    <file name="contactenos.css" crc="3861426527" ref="contactenos"/>
+  </folder>
+  <folder name="scripts">
+    <file name="jquery-1.8.3.min.js" crc="209076791" ref="index:quienes-somos:servicios:eventos:registros:contactenos:sociales:culturales:civicos:deportivos:estudiantes:docestes"/>
+    <file name="museutils.js" crc="4291592202" ref="index:quienes-somos:servicios:eventos:registros:contactenos:sociales:culturales:civicos:deportivos:estudiantes:docestes"/>
+    <file name="pie.js" crc="3827607177" ref="index:quienes-somos:servicios:eventos:registros:contactenos:sociales:culturales:civicos:deportivos:estudiantes:docestes"/>
+    <file name="jquery.musemenu.js" crc="3788803530" ref="index:quienes-somos:servicios:eventos:registros:contactenos:sociales:culturales:civicos:deportivos:estudiantes:docestes"/>
+    <file name="jquery.watch.js" crc="4068933136" ref="index:quienes-somos:servicios:eventos:registros:contactenos:sociales:culturales:civicos:deportivos:estudiantes:docestes"/>
+    <file name="webpro.js" crc="3903299128" ref="quienes-somos:index:contactenos:servicios:eventos:sociales"/>
+    <file name="musewpdisclosure.js" crc="4285748861" ref="quienes-somos"/>
+    <file name="musewpslideshow.js" crc="138381373" ref="index:servicios:eventos:sociales"/>
+    <file name="jquery.museoverlay.js" crc="4250894771" ref="index:servicios:eventos:sociales"/>
+    <file name="touchswipe.js" crc="4156838003" ref="index:servicios:eventos:sociales"/>
+    <file name="form_check.php" crc="4225488401" ref="contactenos"/>
+    <file name="form_throttle.php" crc="425392939" ref="contactenos"/>
+    <file name="form-u1467.php" crc="4010181804" ref="contactenos"/>
+  </folder>
+  <folder name="images">
+    <file name="headindex.png" crc="4209244531" ref="index:quienes-somos:servicios:eventos:registros:contactenos:sociales:culturales:civicos:deportivos:estudiantes:docestes"/>
+    <file name="instruye.jpg" crc="216177707" ref="index:servicios:eventos:registros:sociales:culturales:civicos:deportivos:estudiantes:docestes"/>
+    <file name="arrowmenudown.gif" crc="213132104" ref="index:quienes-somos:eventos:registros"/>
+    <file name="23.jpg" crc="77515170" ref="quienes-somos"/>
+    <file name="parque.jpg" crc="433262035" ref="quienes-somos"/>
+    <file name="dsc07047.jpg" crc="156333054" ref="index"/>
+    <file name="patria.jpg" crc="3949626935" ref="index"/>
+    <file name="u1392-grad.png" crc="3888587902" ref="index"/>
+    <file name="deportivos.jpg" crc="4241599960" ref="index"/>
+    <file name="u1497-17.png" crc="3947080191" ref="contactenos"/>
+    <file name="u1497-17-r.png" crc="3822222845" ref="contactenos"/>
+    <file name="u1497-17-m.png" crc="258194880" ref="contactenos"/>
+    <file name="u1497-17-fs.png" crc="3929567969" ref="contactenos"/>
+    <file name="p1160711.jpg" crc="262806694" ref="quienes-somos"/>
+    <file name="p1160881.jpg" crc="347350484" ref="quienes-somos"/>
+    <file name="p1030814.jpg" crc="30297681" ref="quienes-somos"/>
+    <file name="p1180611.jpg" crc="504780088" ref="quienes-somos"/>
+    <file name="p280312_0942.jpg" crc="4088198763" ref="servicios"/>
+    <file name="p1030770.jpg" crc="293329236" ref="servicios"/>
+    <file name="img_1875.jpg" crc="3901180767" ref="servicios"/>
+    <file name="pasted image 625x470.jpg" crc="4136979203" ref="servicios"/>
+    <file name="p1000945.jpg" crc="343871733" ref="servicios"/>
+    <file name="pasted image 476x360.jpg" crc="4248510101" ref="servicios"/>
+    <file name="pasted image 237x213.jpg" crc="4250889659" ref="servicios"/>
+    <file name="pasted image 450x325.jpg" crc="32996234" ref="servicios"/>
+    <file name="p280312_0950_-01-.jpg" crc="4124900619" ref="servicios"/>
+    <file name="img_1885.jpg" crc="3873556070" ref="servicios"/>
+    <file name="p1160709.jpg" crc="3774846922" ref="servicios"/>
+    <file name="p1160938.jpg" crc="54179248" ref="servicios"/>
+    <file name="sociales01-u1918.jpg" crc="3812287917" ref="eventos"/>
+    <file name="culturales01-u1923.jpg" crc="3777636687" ref="eventos"/>
+    <file name="deportivos01-u1937.jpg" crc="350031152" ref="eventos"/>
+    <file name="civicos-u1970.jpg" crc="156636713" ref="eventos"/>
+    <file name="registros.swf" crc="3974691707" ref="registros"/>
+  </folder>
+  <file name="index.html" crc="337566570" mt="1408255621245" redirect="true"/>
+  <file name="quienes-somos.html" crc="3820196117" mt="1408255621276" redirect="true"/>
+  <file name="servicios.html" crc="3905895852" mt="1408635158579" redirect="true"/>
+  <file name="eventos.html" crc="4078821729" mt="1408811632493" redirect="true"/>
+  <file name="registros.html" crc="3933959475" mt="1409257482355" redirect="true"/>
+  <file name="contactenos.html" crc="4187784871" mt="1408255621291" redirect="true"/>
+  <file name="sociales.html" crc="274636150" mt="1408811374634" redirect="true"/>
+  <file name="culturales.html" crc="3976852150" mt="1408255621260" redirect="true"/>
+  <file name="civicos.html" crc="420186991" mt="1408255621260" redirect="true"/>
+  <file name="deportivos.html" crc="4187118749" mt="1408255621276" redirect="true"/>
+  <file name="estudiantes.html" crc="113159273" mt="1408255621276" redirect="true"/>
+  <file name="docestes.html" crc="329153411" mt="1408255621276" redirect="true"/>
+</manifest>

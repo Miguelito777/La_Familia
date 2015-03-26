@@ -1,0 +1,40 @@
+<manifest alg="2" build="375" opt="false" iceEnabled="true" exportTarget="other" resolutions="1x" timestamp="1418322541319">
+  <folder name="css">
+    <file name="site_global.css" crc="426517801"/>
+    <file name="master_a-p_gina-maestra.css" crc="198846889" ref="civicos:index:culturales:sociales:deportivos"/>
+    <file name="civicos.css" crc="4151217956" ref="civicos"/>
+    <file name="index.css" crc="158271713" ref="index"/>
+    <file name="culturales.css" crc="303581750" ref="culturales"/>
+    <file name="sociales.css" crc="356984129" ref="sociales"/>
+    <file name="deportivos.css" crc="14591904" ref="deportivos"/>
+  </folder>
+  <folder name="scripts">
+    <file name="jquery-1.8.3.min.js" crc="4146222537" ref="index:sociales:culturales:civicos:deportivos"/>
+    <file name="museutils.js" crc="135030331" ref="index:sociales:culturales:civicos:deportivos"/>
+    <file name="pie.js" crc="3827607177" ref="index:sociales:culturales:civicos:deportivos"/>
+    <file name="jquery.musemenu.js" crc="104492196" ref="index:sociales:culturales:civicos:deportivos"/>
+    <file name="jquery.watch.js" crc="377079819" ref="index:sociales:culturales:civicos:deportivos"/>
+    <file name="html5shiv.js" crc="4241844378" ref="index:sociales:culturales:civicos:deportivos"/>
+  </folder>
+  <folder name="images">
+    <file name="page-sprite.png" crc="4170732454" ref="index:culturales:deportivos"/>
+    <file name="page-sprite2.png" crc="4331205" ref="sociales:civicos"/>
+    <file name="amp.jpg" crc="4042048525" ref="sociales"/>
+    <file name="apm.jpg" crc="254064656" ref="sociales"/>
+    <file name="familias-crop-u974.jpg" crc="73912142" ref="sociales"/>
+    <file name="1380668_170506313151882_2132463190_n.jpg" crc="4167781288" ref="culturales"/>
+    <file name="10374154_1549110031973538_1488264614_n.jpg" crc="275569283" ref="culturales"/>
+    <file name="10833730_1549110158640192_594472979_n-crop-u816.jpg" crc="4168088631" ref="culturales"/>
+    <file name="1378259_170505816485265_1579868277_n.jpg" crc="314075867" ref="culturales"/>
+    <file name="bran.jpg" crc="4217026253" ref="civicos"/>
+    <file name="mayra.jpg" crc="218293216" ref="civicos"/>
+    <file name="mayra4.jpg" crc="346378646" ref="deportivos"/>
+    <file name="mayra2.jpg" crc="76810767" ref="deportivos"/>
+    <file name="mayra3.jpg" crc="42726711" ref="deportivos"/>
+  </folder>
+  <file name="index.html" crc="3792531993" mt="1417108525509" redirect="true"/>
+  <file name="sociales.html" crc="369894185" mt="1417124276013" redirect="true"/>
+  <file name="culturales.html" crc="437245242" mt="1417123029877" redirect="true"/>
+  <file name="civicos.html" crc="4036776214" mt="1418316664110" redirect="true"/>
+  <file name="deportivos.html" crc="3928616762" mt="1418319283578" redirect="true"/>
+</manifest>
