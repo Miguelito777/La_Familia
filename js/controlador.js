@@ -18,9 +18,9 @@ function login(){
 				if (!data)
 					alert("Usuario no registrado en el colegio");
 				if (data == "docente") 
-					window.location="../lafamilia/docentes.html";
+					window.location="../La_Familia/docentes.html";
 				if (data == "estudiante") 
-					window.location = "../lafamilia/estudiantes.html";
+					window.location = "../La_Familia/estudiantes.html";
 			}
 		}).done(function(data,textStatus,jqXHR){
 			if (console && console.log())
