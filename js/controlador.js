@@ -8,6 +8,7 @@ function cargar(){
 function login(){
 	var usuario = prompt("Usuario:");
 	var password = prompt("Password: ");
+	console.log("Por el momento estoy a punto de hacer la peticion Ajax");
 	if (usuario != "" && password != "") {
 		$.ajax({
 			data : {"usuario":usuario, "password":password},
@@ -15,6 +16,8 @@ function login(){
 			type : "POST",
 			Cache : false,
 			success : function(data){
+				console.log("Retorne de la Peticion Ajax");
+				console.log(data);
 				if (!data)
 					alert("Usuario no registrado en el colegio");
 				if (data == "docente") 
