@@ -40,13 +40,19 @@
 </div>
 </div>
 <ul class="nav nav-tabs" role="tablist" id="myTab">
-<li role="presentation" class="active"><a href="#tareas" aria-controls="tareas" role="tab" data-toggle="tab" onclick="notas.asignadas()">Tareas Asignadas</a></li>
-<li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">Ver Nota de Tareas</a></li>
+<li role="presentation" class="active"><a href="#tareas" aria-controls="tareas" role="tab" data-toggle="tab" >Tareas Asignadas</a></li>
+<li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab" onclick="verCursos()">Ver Nota de Tareas</a></li>
 <li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Ver notas finales</a></li>
 </ul>
 <div class="tab-content">
 <div role="tabpanel" class="tab-pane active" id="tareas"></div>
-<div role="tabpanel" class="tab-pane" id="messages"></div>
+<div role="tabpanel" class="tab-pane" id="messages">
+	<div class="col-xs-4"></div>
+	<div class="col-xs-4" id="idcursos">
+		
+	</div>
+	<div class="col-xs-4"></div>
+</div>
 <div role="tabpanel" class="tab-pane" id="settings">hola, estoy en Notas finales</div>
 </div>
 </div>
@@ -57,6 +63,7 @@ $('#myTab a:last').tab('show')
 </script>
 <script type="text/javascript" src="js/jquery-2.1.1.js"></script>
 <script type="text/javascript" src="js/bootstrap.js"></script>
+<script type="text/javascript" src="js/modelo.js"></script>
 <script type="text/javascript" src="js/controladorestudiantes.js"></script>
 </body>
 </html>

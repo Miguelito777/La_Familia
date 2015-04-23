@@ -52,12 +52,14 @@ class log_in extends conexion
 			return false;	
 	}
 	function is_estudiante(){
-		$query = "SELECT idEstudiante, nombresEstudiante from Estudiantes where paswordEstudiante = '$this->passwordd' and nombresEstudiante = '$this->usuario'";
+		$query = "SELECT idEstudiante, nombresEstudiante, Grados_idGrado from Estudiantes where paswordEstudiante = '$this->passwordd' and nombresEstudiante = '$this->usuario'";
 		if (!parent:: __construct())
 			die ("Error en la conexion para buscar a un estudiante"+mysql_error());
 		if(!$this->datosusuario = mysql_query($query))
 			die("Error en la consulta para evaluar a un estudiante"+mysql_error());
 		$this->closeconnect();
+		$estudiante = mysql_fetch_array($this->datosusuario,MYSQL_ASSOC);
+		$_SESSION["grado_estudiante"] = $estudiante["Grados_idGrado"];
 		if(mysql_num_rows($this->datosusuario)>0)
 			return true;
 		else
@@ -192,6 +194,34 @@ class tareas extends conexion
 		}
 		$this->closeconnect();
 		return true;	
+	}
+}
+
+/**
+* Clase que administra los cursos de un estudiante
+*/
+class Cursos extends conexion
+{
+	public $cursos;
+	function __construct()
+	{
+		# code...
+	}
+
+	function consultar($idgrado){
+		$query = "SELECT PD.id_periodos_docentes, M.nombreMateria from Materias M inner join Periodos_docentes  PD  on M.idMateria = PD.Materias_idMateria and PD.Grados_idGrado = $idgrado";
+		if(!parent:: __construct())
+			die("Error en la conexion para soolicitar los cursos "+mysql_error());
+		if(!$this->cursos = mysql_query($query))
+			die("Error en la solicitud de los cursos "+mysql_error());
+		$this->closeconnect();
+	}
+	function obtener(){
+		if ($cursos = mysql_fetch_array($this->cursos,MYSQL_ASSOC))
+			return $cursos;
+		else
+			return false;
+			
 	}
 }
 

@@ -46,3 +46,34 @@ var documento = {
 		};
 	}
 }
+
+function verCursos(){
+	var mis_cursos = new Cursos();
+	mis_cursos.solicitar();
+	setTimeout(function(){
+		document.getElementById("idcursos").innerHTML = "";
+		$("#idcursos").append("<table class='table table-hover' id='cursos'><tr><th>Mis Cursos</th></tr></table>");
+		for (var i = 0; i < mis_cursos.cursos_array.length; i++) {
+			$("#cursos").append("<tr><td>"+mis_cursos.cursos_array[i][1]+"</td></tr>")
+		};
+
+		var table = document.getElementById("cursos");
+		var rows = table.getElementsByTagName("tr");
+
+		for (var i = 0; i < rows.length; i++) {
+			var idcurso = mis_cursos.cursos_array[i][0];
+			var currentRow = table.rows[i+1];
+			var createClickHandler = 
+				function (idcurso) {
+					return function(){
+						console.log("Usted selecciono el Curso: "+idcurso);
+					}
+				};
+			currentRow.onclick = createClickHandler(idcurso);	
+		};
+
+
+	},50);
+	
+}
+

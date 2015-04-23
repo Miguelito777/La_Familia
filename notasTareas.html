@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Estudiantes</title>
+	<link rel="stylesheet" href="css/bootstrap.css">
+</head>
+<body>
+	<div class="container">
+		<div class="row bg-info">
+			<div class="col-xs-4"></div>
+			<div class="col-xs-4"></div> 
+			<div class="col-xs-4">
+				<table class="table table-condensed ">
+					<thead>
+					</thead>
+					<tbody>
+						<tr>
+							<th>Estudiante:</th>
+							<td id = "nombre"></td>	
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-xs-4">
+				<p class="lead">
+					<br>
+					<h1>Logotipo</h1>
+					<br><br><br>
+				</p>
+			</div>
+			<div class="col-xs-8">
+				<br>
+				<p>
+					<h1>Informacion relevante de la direccion</h1>
+					<br><br><br>
+				</p>
+			</div>
+		</div>
+
+		<ul class="nav nav-tabs" role="tablist" id="myTab">
+  			<li role="presentation" class="active"><a href="#tareas" aria-controls="tareas" role="tab" data-toggle="tab" onclick="notas.asignadas()">Tareas Asignadas</a></li>
+  			<li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">Ver Nota de Tareas</a></li>
+  			<li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Ver notas finales</a></li>
+		</ul>
+
+		<div class="tab-content">
+  			<div role="tabpanel" class="tab-pane active" id="tareas"></div>
+  			<div role="tabpanel" class="tab-pane" id="messages"></div>
+  			<div role="tabpanel" class="tab-pane" id="settings">hola, estoy en Notas finales</div>
+		</div>
+	</div>
+ 
+<script>
+  $(function () {
+    $('#myTab a:last').tab('show')
+  })
+</script>
+	
+	<script type="text/javascript" src="js/jquery-2.1.1.js"></script>
+	<script type="text/javascript" src="js/bootstrap.js"></script>
+	<script type="text/javascript" src="js/controladorestudiantes.js"></script>
+</body>
+</html>

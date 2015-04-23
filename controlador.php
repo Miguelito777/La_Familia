@@ -50,7 +50,7 @@
 			$tareas->grado(isset($_POST["grado"]));
 		}
 		else
-			$tareas->grado(1);
+			$tareas->grado($_SESSION["grado_estudiante"]);
 		$tareasa = array();
 		$i = 0;
 		while ($tarea = $tareas->tarea()) {
@@ -64,6 +64,26 @@
 		 $tareas_object = (object)$tareasa; 
 		 echo json_encode($tareas_object);
 	}
+
+	if (isset($_POST["cursosasignados"])) {
+		$tareas = new Cursos();
+		$tareas->consultar($_SESSION["grado_estudiante"]);
+		$tareasa = array();
+		$i = 0;
+		while ($tarea = $tareas->obtener()) {
+		 	$j = 0;
+		 	foreach ($tarea as $key => $value) {
+		 		$tareasa[$i][$j] = $value;
+		 		$j++;
+		 	}
+		 	$i++;
+		 } 
+		 $tareas_object = (object)$tareasa; 
+		echo json_encode($tareas_object);
+		
+	}
+
+	
 
 
 	if (isset($_POST["datosdocente"])) {
