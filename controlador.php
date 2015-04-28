@@ -83,7 +83,10 @@
 		
 	}
 
-	
+	if (isset($_POST["guardarcurso"])) {
+		$_SESSION["cursoguardaro"] = $_POST["guardarcurso"];
+		echo true;		
+	}
 
 
 	if (isset($_POST["datosdocente"])) {
@@ -120,5 +123,22 @@
 		}
 		
 		
+	}
+
+	if (isset($_POST["notastareas"])) {
+		$notastareas = new tareas();
+		$notastareas->notas($_SESSION["cursoguardaro"],$_SESSION["id_estudiante"]);
+		$notasaray = array();
+		$i = 0;
+		while ( $notaarray = $notastareas->obtenernotas()) {
+			$j = 0;
+			foreach ($notaarray as $key => $value) {
+				$notasaray[$i][$j] = $value;
+				$j++;
+			}
+			$i++;
+		}
+		$notasObject = (Object)$notasaray;
+		echo json_encode($notasObject);
 	}
 ?>

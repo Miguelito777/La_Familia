@@ -60,6 +60,7 @@ class log_in extends conexion
 		$this->closeconnect();
 		$estudiante = mysql_fetch_array($this->datosusuario,MYSQL_ASSOC);
 		$_SESSION["grado_estudiante"] = $estudiante["Grados_idGrado"];
+		$_SESSION["id_estudiante"] = $estudiante["idEstudiante"];
 		if(mysql_num_rows($this->datosusuario)>0)
 			return true;
 		else
@@ -129,10 +130,28 @@ class tareas extends conexion
 	public $grado;
 	public $tareas;
 	public $estudiantes;
+	public $notastareas;
 	function __construct()
 	{
 		
 	}
+
+	function notas($idcurso,$idestudiante){
+		$query = "SELECT T.idTarea, T.nombreTarea, T.fechaentregaTarea, NT.Punteo_Tarea, NT.ObservacionTarea from Tareas T inner join Nota_tareas NT on T.Periodos_docentes_id_periodos_docentes = $idcurso and T.idTarea = NT.Tareas_idTarea and NT.Estudiantes_idEstudiante = $idestudiante";
+		if (!parent:: __construct()) 
+			die("Error en la conexion para localizar las tareas "+mysql_error());
+		if(!$this->notastareas = mysql_query($query))
+			die("Error en la consutla de las notas "+mysql_error());
+		$this->closeconnect();
+	}
+
+	function obtenernotas(){
+		if ($notatarea = mysql_fetch_array($this->notastareas,MYSQL_ASSOC))
+			return $notatarea;
+		else
+			return false;
+	}
+
 	function grado($grado){
 		$this->grado = $grado;
 		$query = "SELECT T.idTarea, T.fechaasignacionTarea, T.fechaentregaTarea, T.nombreTarea, M.nombreMateria, T.descripcionTarea from Tareas T inner join Periodos_docentes PD on T.Periodos_docentes_id_periodos_docentes = PD.id_periodos_docentes and Grados_idGrado = '$this->grado' inner join Materias M on PD.Materias_idMateria = M.idMateria";
@@ -226,6 +245,28 @@ class Cursos extends conexion
 }
 
 
+/**
+* Clase que administra a los estudiantes
+*/
+class Estudiantes extends conexion
+{
+	
+	function __construct()
+	{
+		
+	}
 
+	function almacenarEstudiante($password, $nombre, $idgrado){
+		$idgradoint = (INT)$idgrado;
+		$query = "INSERT into Estudiantes (paswordEstudiante,nombresEstudiante,Grados_idGrado) values ('$password','$nombre',$idgradoint)"
+		if (!parent __construct()) {
+			die("Error en la conexion para almacenar a un estudiante "+mysql_error());
+		}
+		if (!mysql_query($query)) {
+			die("Error al almacenar un estudiante "+mysql_error());
+		}
+		$this->closeconnect();
+	}
+}	
 
 ?>
