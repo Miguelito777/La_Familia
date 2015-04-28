@@ -29,7 +29,7 @@ if (file_exists ("bak_".$archivo)){
 /** Clases necesarias */
 require_once('Classes/PHPExcel.php');
 require_once('Classes/PHPExcel/Reader/Excel2007.php');
-
+include 'modelo.php';
 // Cargando la hoja de cálculo
 $objReader = new PHPExcel_Reader_Excel2007();
 $objPHPExcel = $objReader->load("bak_".$archivo);
@@ -48,6 +48,8 @@ for ($i=1;$i<=47;$i++){
 	$_DATOS_EXCEL[$i]['nombre'] = $objPHPExcel->getActiveSheet()->getCell('C'.$i)->getCalculatedValue();
 	$_DATOS_EXCEL[$i]['grado']= $objPHPExcel->getActiveSheet()->getCell('D'.$i)->getCalculatedValue();
 }
+
+$estudiantes = new Estudiantes();
 
 for ($i=1;$i<=47;$i++){
         echo $_DATOS_EXCEL[$i]['nocontrol'];

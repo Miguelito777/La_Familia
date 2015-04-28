@@ -245,6 +245,28 @@ class Cursos extends conexion
 }
 
 
+/**
+* Clase que administra a los estudiantes
+*/
+class Estudiantes extends conexion
+{
+	
+	function __construct()
+	{
+		
+	}
 
+	function almacenarEstudiante($password, $nombre, $idgrado){
+		$idgradoint = (INT)$idgrado;
+		$query = "INSERT into Estudiantes (paswordEstudiante,nombresEstudiante,Grados_idGrado) values ('$password','$nombre',$idgradoint)"
+		if (!parent __construct()) {
+			die("Error en la conexion para almacenar a un estudiante "+mysql_error());
+		}
+		if (!mysql_query($query)) {
+			die("Error al almacenar un estudiante "+mysql_error());
+		}
+		$this->closeconnect();
+	}
+}	
 
 ?>
