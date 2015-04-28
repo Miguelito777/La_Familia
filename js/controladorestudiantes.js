@@ -73,7 +73,7 @@ function verCursos(){
 		};
 
 
-	},50);
+	},500);
 	
 }
 
