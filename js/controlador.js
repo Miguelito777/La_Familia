@@ -266,3 +266,16 @@ var docente = {
 	} 
 }
 
+function notasdetareas(){
+	var notastareas = new notasTareas();
+	notastareas.solicitar();
+
+	setTimeout(function(){
+		console.log(notastareas.notas_array);
+		for (var i = 0; i < notastareas.notas_array.length; i++) {
+			$("#tablanotas").append("<tr><td>"+notastareas.notas_array[i][1]+"</td><td>"+notastareas.notas_array[i][2]+"</td><td>"+notastareas.notas_array[i][3]+"</td><td>"+notastareas.notas_array[i][4]+"</td></tr>");
+		};
+	},500); 
+}
+
+

@@ -40,27 +40,23 @@
 			</div>
 		</div>
 
-		<ul class="nav nav-tabs" role="tablist" id="myTab">
-  			<li role="presentation" class="active"><a href="#tareas" aria-controls="tareas" role="tab" data-toggle="tab" onclick="notas.asignadas()">Tareas Asignadas</a></li>
-  			<li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">Ver Nota de Tareas</a></li>
-  			<li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Ver notas finales</a></li>
-		</ul>
-
-		<div class="tab-content">
-  			<div role="tabpanel" class="tab-pane active" id="tareas"></div>
-  			<div role="tabpanel" class="tab-pane" id="messages"></div>
-  			<div role="tabpanel" class="tab-pane" id="settings">hola, estoy en Notas finales</div>
+		<div class="row">
+			<div class="col-xs-12" >
+				<table class="table" id="tablanotas">
+					<th>Nombre de la tarea</th>
+					<th>Fecha de Entrega</th>
+					<th>Punteo</th>
+					<th>Observacion</th>
+				</table>
+			</div>
 		</div>
-	</div>
- 
-<script>
-  $(function () {
-    $('#myTab a:last').tab('show')
-  })
-</script>
 	
 	<script type="text/javascript" src="js/jquery-2.1.1.js"></script>
 	<script type="text/javascript" src="js/bootstrap.js"></script>
-	<script type="text/javascript" src="js/controladorestudiantes.js"></script>
+	<script type="text/javascript" src="js/modelo.js"></script>
+	<script type="text/javascript" src="js/controlador.js"></script>
+	<script>
+		notasdetareas();
+	</script>
 </body>
 </html>

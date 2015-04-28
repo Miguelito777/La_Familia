@@ -66,7 +66,17 @@ function verCursos(){
 			var createClickHandler = 
 				function (idcurso) {
 					return function(){
-						console.log("Usted selecciono el Curso: "+idcurso);
+						$.ajax({
+							data : {guardarcurso : idcurso},
+							url : "controlador.php",
+							type : "POST",
+							success : function(data){
+								if (data == 1) {
+									window.location = "../La_Familia/notasTareas.html";
+								};		
+							}
+						})
+						
 					}
 				};
 			currentRow.onclick = createClickHandler(idcurso);	
