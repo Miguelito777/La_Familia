@@ -1,7 +1,7 @@
 <!-- http://ProgramarEnPHP.wordpress.com -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>:: Importar de Excel a la Base de Datos ::</title>
+<title>:: Importar de Cursos a la Base de Datos ::</title>
 </head>
 
 <body>
@@ -47,10 +47,11 @@ $objPHPExcel->setActiveSheetIndex(0);
 for ($i=1;$i<=47;$i++){
 	$_DATOS_EXCEL[$i]['nocontrol'] = $objPHPExcel->getActiveSheet()->getCell('B'.$i)->getCalculatedValue();
 	$_DATOS_EXCEL[$i]['nombre'] = $objPHPExcel->getActiveSheet()->getCell('C'.$i)->getCalculatedValue();
-	$_DATOS_EXCEL[$i]['grado']= $objPHPExcel->getActiveSheet()->getCell('D'.$i)->getCalculatedValue();
+	$_DATOS_EXCEL[$i]['otro'] = $objPHPExcel->getActiveSheet()->getCell('D'.$i)->getCalculatedValue();
 }
 
-$estudiantes = new Estudiantes();
+$estudiantes = new Cursos();
+$estudiantes->connect();
 mysql_query("SET NAMES 'utf8'");
 for ($i=1;$i<=47;$i++){
 	echo "<br> <br>";
@@ -58,10 +59,9 @@ for ($i=1;$i<=47;$i++){
 	echo " ";
         echo $_DATOS_EXCEL[$i]['nombre'];
 	echo " ";
-        echo $_DATOS_EXCEL[$i]['grado'];
-        
-	echo "<br><br> <br>";
-	$estudiantes->almacenarEstudiante($_DATOS_EXCEL[$i]['nocontrol'],$_DATOS_EXCEL[$i]['nombre'],$_DATOS_EXCEL[$i]['grado']);
+        echo $_DATOS_EXCEL[$i]['otro'];
+	echo "<br><br>";
+	$estudiantes->almacenarCurso($_DATOS_EXCEL[$i]['nocontrol'],$_DATOS_EXCEL[$i]['nombre'],$_DATOS_EXCEL[$i]['otro']);
 }
 
 $estudiantes->cerrar();	

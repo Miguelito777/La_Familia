@@ -216,7 +216,7 @@ class tareas extends conexion
 	}
 }
 
-/**
+/**	
 * Clase que administra los cursos de un estudiante
 */
 class Cursos extends conexion
@@ -225,6 +225,20 @@ class Cursos extends conexion
 	function __construct()
 	{
 		# code...
+	}
+
+	function connect(){
+		if(!parent:: __construct())
+			die("Error en la conexion para almacenar cursos "+mysql_error());
+	}
+
+	function almacenarCurso($idcurso,$curso,$idotro){
+		$idgrado = (int)$idcurso;
+		$iddocente = (int)$curso;
+		$idcurso = (int)$idotro;
+		$query = "INSERT INTO Periodos_docentes (Grados_idGrado,Docentes_idDocente,Materias_idMateria) values ($idgrado,$iddocente,$idcurso)";
+		if(!$isertarcurso = mysql_query($query))
+			die("Error al almacenar un curso "+mysql_error());	
 	}
 
 	function consultar($idgrado){
@@ -240,7 +254,10 @@ class Cursos extends conexion
 			return $cursos;
 		else
 			return false;
-			
+	}
+	
+	function cerrar(){
+		$this->closeconnect();
 	}
 }
 
@@ -253,18 +270,19 @@ class Estudiantes extends conexion
 	
 	function __construct()
 	{
-		
+		if (!parent:: __construct()) {
+                        die("Error en la conexion para almacenar a un estudiante "+mysql_error());
+                }
 	}
 
 	function almacenarEstudiante($password, $nombre, $idgrado){
 		$idgradoint = (INT)$idgrado;
-		$query = "INSERT into Estudiantes (paswordEstudiante,nombresEstudiante,Grados_idGrado) values ('$password','$nombre',$idgradoint)"
-		if (!parent __construct()) {
-			die("Error en la conexion para almacenar a un estudiante "+mysql_error());
-		}
+		$query = "INSERT into Estudiantes (paswordEstudiante,nombresEstudiante,Grados_idGrado) values ('$password','$nombre',$idgradoint)";
 		if (!mysql_query($query)) {
 			die("Error al almacenar un estudiante "+mysql_error());
 		}
+	}
+	function cerrar (){
 		$this->closeconnect();
 	}
 }	
