@@ -83,7 +83,32 @@ function verCursos(){
 		};
 
 
-	},500);
+	},800);
 	
+}
+
+
+
+function verFinales(){
+        var estudiante = new Estudiantesss();
+        //var salon = new Salon("Jesus","Menchu Xoyon","Silhyta");
+        estudiante.notasFinales();
+        //conferencia.obtenerTodasHorarios();
+	document.getElementById("bimestrales").innerHTML = "<h1>Buscando Notas finales ...</h1>";
+        setTimeout(function(){
+ //       alert("Ya busque los estudianes");
+	        document.getElementById("bimestrales").innerHTML = "";
+                $("#bimestrales").append("<table class = 'table table-striped' id='cdisponibles'><tr class='success'><th>Curso</th><th>Primer Bimestre</th><th>Segundo Bimestre</th><th>Tercer Bimestre</th><th>Cuarto Bimestre</th><th>Promedio</th><th>Resultado</th></tr></table>");
+                for (var i = 0; i < estudiante.estudiantesarray.length; i++) {
+                        $("#cdisponibles").append("<tr><td>"+estudiante.estudiantesarray[i][0]+"</td><td>"+estudiante.estudiantesarray[i][1]+"</td><td>"+estudiante.estudiantesarray[i][2]+"</td><td>"+estudiante.estudiantesarray[i][3]+"</td><td>"+estudiante.estudiantesarray[i][4]+"</td><td>"+estudiante.estudiantesarray[i][5]+"</td><td>"+estudiante.estudiantesarray[i][6]+"</td></tr>");
+                };
+
+                /*document.getElementById("idsalon").innerHTML = "";
+                $("#idsalon").append("<select class='form-control' id='selectsalones' onchange = 'horariosDisponibles(this.value)'><option value="+0+" selected = 'selected' '>Seleccionar salon</option></select>");
+                for (var i = 0; i < salon.salonesarray.length; i++) {
+                        $("#selectsalones").append("<option value="+salon.salonesarray[i][0]+">"+salon.salonesarray[i][1]+"</option>");
+                };*/
+        },500);
+
 }
 

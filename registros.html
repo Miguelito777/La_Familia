@@ -22,10 +22,10 @@
      <img class="block" id="u189_img" src="images/headindex.png" alt="" width="202" height="189"/>
     </div>
     <div class="clearfix grpelem" id="u390-12"><!-- content -->
-     <p id="u390-2">Colegio Privado Mixto</p>
-     <p id="u390-4">LA FAMILIA</p>
-     <p id="u390-6">Zona 1 Totonicapán</p>
-     <p id="u390-8">tel. 7766&#45;7184</p>
+     <p id="u390-6">Colegio Cientifico y Tecnológico</p>
+     <p id="u390-4">EL PEDREGAL</p>
+     <p id="u390-6">Nimasac Totonicapán</p>
+     <p id="u390-8">tel. </p>
      <p>&nbsp;</p>
      <p>&nbsp;</p>
     </div>
@@ -33,7 +33,7 @@
      <img class="block" id="u406_img" src="images/instruye.jpg" alt="" width="300" height="186"/>
     </div>
     <div class="clearfix grpelem" id="u414-6"><!-- content -->
-     <p id="u414-2">Instruye al niño en el camino correcto, y aun en su vejes no lo abandonara.</p>
+     <p id="u414-2">Instruye al niño en el camino correcto, y aún en su vejez no lo abandonará.</p>
      <p id="u414-4">Proverbios 22:6</p>
     </div>
     <div class="clearfix grpelem" id="u415-3"><!-- content -->
@@ -77,7 +77,7 @@
         <a class="nonblock nontext MenuItem MenuItemWithSubMenu clearfix grpelem" id="u362" href="estudiantes.html"><!-- horizontal box --><div class="MenuItemLabel NoWrap clearfix grpelem" id="u364-4"><!-- content --><p>Estudiantes</p></div></a>
        </li>
        <li class="MenuItemContainer clearfix colelem" id="u371"><!-- horizontal box -->
-        <a class="nonblock nontext MenuItem MenuItemWithSubMenu clearfix grpelem" id="u372" href="docestes.html"><!-- horizontal box --><div class="MenuItemLabel NoWrap clearfix grpelem" id="u374-4"><!-- content --><p>Docestes</p></div></a>
+        <a class="nonblock nontext MenuItem MenuItemWithSubMenu clearfix grpelem" id="u372" href="docestes.html"><!-- horizontal box --><div class="MenuItemLabel NoWrap clearfix grpelem" id="u374-4"><!-- content --><p>Docentes</p></div></a>
        </li>
       </ul>
      </div>
@@ -87,7 +87,15 @@
     </li>
    </ul>
    
-   <div class="verticalspacer"></div>
+   <div class="verticalspacer" align="center">
+	<br><br><br>
+	<input type="text" id="usuariocol" placeholder="Usuario">
+	</br><br>
+	<input type="password" id="passwordcol" placeholder="Password">
+	<br><br>
+	<input type="button" role="button" onclick = "login()" value="Ingresar"> 
+	
+   </div>
   </div>
   <!-- JS includes -->
   <script type="text/javascript">
@@ -108,10 +116,9 @@ Muse.Utils.initWidget('.MenuBar', function(elem) { return $(elem).museMenu(); })
 Muse.Utils.fullPage('#page');/* 100% height page */
 Muse.Utils.showWidgetsWhenReady();/* body */
 Muse.Utils.transformMarkupToFixBrowserProblems();/* body */
-} catch(e) { Muse.Assert.fail('Error calling selector function:' + e); }});
+} catch(e) {/* Muse.Assert.fail('Error calling selector function:' + e)*/; }});
 </script>
 <script type="text/javascript" src="js/jquery-2.1.1.js"></script>
-<script type="text/javascript"src="js/controlador.js"></script>
-<script> login();</script>   
+<script type="text/javascript" src="js/controlador.js"></script> 
 </body>
 </html>

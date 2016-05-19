@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Perfil Docentes</title>
+	<link rel="stylesheet" href="css/bootstrap.css">
+	<link rel="stylesheet" href="css/jquery-ui.css">
+	
+</head>
+
+<body>
+
+		<div class="container">
+			<div class="row bg-success">
+				<div class="col-xs-4">
+					<table class="table table-condensed ">
+						<thead>
+						</thead>
+						<tbody>
+							<tr>
+								<th> Docente:</th>
+								<td id = "nombre"></td>	
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="col-xs-4"id="menuPrincipal"style="align"></div> 
+				<div class="col-xs-4" id="session">
+					
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-4">
+					<img src="images/headindex.png" class="img-responsive" alt="Responsive image">	
+				</div>
+				<div class="col-xs-6">
+						<h1>BIENVENIDOS</h1><br>
+					<p class="lead">Fecha: <div id="dia"></div><div id="mes"></div><div id="anio"></div></p>
+					<script>
+						var date = new Date();
+						var anio = date.getFullYear();
+						var mes = (date.getMonth() +1);
+						var dia = date.getDate();
+						document.getElementById('dia').innerHTML = dia;
+						document.getElementById('anio').innerHTML = "del "+anio;
+						switch(mes) {
+   							case 1:
+                                                        document.getElementById('mes').innerHTML = 'enero';
+                                                        break;
+							case 2:
+                                                        document.getElementById('mes').innerHTML = 'febrero';
+                                                        break;
+							case 3:
+                                                        document.getElementById('mes').innerHTML = 'marzo';
+                                                        break;
+							case 4:
+                                                        document.getElementById('mes').innerHTML = 'abril';
+                                                        break;
+							case 5:
+                                                        document.write('mayo');
+                                                        break;
+							case 6:
+        						document.getElementById('mes').innerHTML = 'Junio';
+        						break;
+    							case 7:
+                                                        document.getElementById('mes').innerHTML = 'julio';
+                                                        break;
+        						case 8:
+                                                        document.getElementById('mes').innerHTML = 'agosto';
+                                                        break;
+        						case 9:
+                                                        document.getElementById('mes').innerHTML = 'septiembre';
+                                                        break;
+							case 10:
+                                                        document.getElementById('mes').innerHTML = 'octubre';
+                                                        break;
+						}
+						
+					</script>
+				</div>
+				<div class="col-xs-2" id="saveTar">
+					<div class="row">
+						<button type="button" class="btn btn-primary btn-lg btn-block" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo" id="nuevaTarea">Asignar nueva tarea</button>	
+					</div>
+					<div class="row">
+						<button type="button" class="btn btn-primary btn-lg btn-block" id="saveTareas">Guardar Tareas</button>	
+					</div>
+				</div>
+				<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+					  <div class="modal-dialog" role="document">
+					    <div class="modal-content">
+					      <div class="modal-header">
+					        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					        <h4 class="modal-title" id="exampleModalLabel">Nueva Tarea</h4>
+					      </div>
+					      <div class="modal-body">
+					        <form>
+					          <div class="form-group">
+					            <label for="recipient-name" class="control-label">Título tarea</label>
+					            <input type="text" class="form-control" id="recipient-name">
+					          </div>
+					          <div class="form-group">
+					            <label for="diaEntrega" class="control-label">Día Entrega</label>
+					            <select class="form-control input-sm" type="text" placeholder="Día de entrega" id="diaEntrega"></select>
+					            <label for="mesEntrega">Mes de entrega</label>
+					             <select class="form-control input-sm" type="text" placeholder="Mes de entrega" id="mesEntrega"></select>
+					          </div>
+					          <div class="form-group">
+					            <label for="message-text" class="control-label">Descripción tarea:</label>
+					            <textarea class="form-control" id="message-text"></textarea>
+					          </div>
+					        </form>
+					      </div>
+					      <div class="modal-footer">
+					      	<button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+        					<button type="button" class="btn btn-primary" data-dismiss="modal" id="otraTar">Almacenar tarea</button>
+					      </div>
+					    </div>
+					  </div>
+					</div>
+				</div>
+			<div class="row">
+				<div class="container">
+					<div class="col-xs-12" id="tareasAsignadas"></div>
+				</div>
+			</div>
+			<br>
+			<br>
+			<div class="row">
+				<div class="col-xs-4"></div>
+				<div class="col-xs-4">Derechos reservados Colegio la familia</div>
+				<div class="col-xs-4"></div>
+			</div>
+		</div>
+	
+	<script type='text/javascript' src="js/jquery-2.1.1.js"></script>
+	<script type="text/javascript" src="js/jquery-ui.min.js"></script>
+	<script type='text/javascript' src="js/bootstrap.min.js"></script>
+	 <!--PQ Grid files-->
+    	<link rel="stylesheet" href="pqgrid.min.css" />
+    	<script src="pqgrid.min.js"></script>
+	
+	<!--PQ Grid Office theme-->
+    	<link rel="stylesheet" href="grid/themes/office/pqgrid.css" />	
+
+	<script type="text/javascript" src="js/modelo.js"></script>
+	<script type="text/javascript" src="js/controlador.js"></script>
+	
+	<script>nombreDocente(); </script>
+	<script>asignarTareas(); 
+	obtenerDiasMes();
+	</script>
+	<link rel="stylesheet" href="css/estilosCol.css" type="text/css">
+</body>
+</html>

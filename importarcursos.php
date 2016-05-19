@@ -15,6 +15,7 @@ Selecciona el archivo a importar:
 <!-- CARGA LA MISMA PAGINA MANDANDO LA VARIABLE upload -->
 
 <?php 
+require 'fpdf.php';
 header("Content-Type: text/html;charset=utf-8");
 extract($_POST);
 if ($action == "upload"){
@@ -44,7 +45,8 @@ $objPHPExcel->setActiveSheetIndex(0);
 //$db = mysql_select_db ("escuela",$cn) or die ("ERROR AL CONECTAR A LA BD");
 	
         // Llenamos el arreglo con los datos  del archivo xlsx
-for ($i=1;$i<=47;$i++){
+
+for ($i=1;$i<=56;$i++){
 	$_DATOS_EXCEL[$i]['nocontrol'] = $objPHPExcel->getActiveSheet()->getCell('B'.$i)->getCalculatedValue();
 	$_DATOS_EXCEL[$i]['nombre'] = $objPHPExcel->getActiveSheet()->getCell('C'.$i)->getCalculatedValue();
 	$_DATOS_EXCEL[$i]['otro'] = $objPHPExcel->getActiveSheet()->getCell('D'.$i)->getCalculatedValue();
@@ -53,7 +55,8 @@ for ($i=1;$i<=47;$i++){
 $estudiantes = new Cursos();
 $estudiantes->connect();
 mysql_query("SET NAMES 'utf8'");
-for ($i=1;$i<=47;$i++){
+for ($i=1;$i<=56;$i++){
+	echo "Almacenando";
 	echo "<br> <br>";
         echo $_DATOS_EXCEL[$i]['nocontrol'];
 	echo " ";

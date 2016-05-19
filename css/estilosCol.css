@@ -1,0 +1,90 @@
+div#menuPrincipal{
+	position: relative;
+	display: block;
+	background: yellow;
+}
+div#menuPrincipal button{
+	position: absolute;
+	top: 0px;
+	left: 30;
+}
+button#saveTareas{
+	position: absolute;
+	top: 75px;
+	left: 0px;
+}
+
+div#saveTar{
+	position: relative;
+}
+
+button#nuevaTarea{
+	position: absolute;
+	top: 25px;
+	left: 0px;
+}
+
+button#saveTareas{
+	position: absolute;
+	top: 75px;
+	left: 0px;
+}
+
+
+div#saveNotTar{
+	position: relative;
+}
+
+button#saveNotasTareas{
+	position: absolute;
+	top: 75px;
+	left: 0px;
+}
+/*body{
+	background: #232355;
+	color:	#ffff6c;
+}
+div.contenedor{
+	position: relative;	
+	margin: auto;
+	margin-top: 25px;
+	width: 960px;
+	height: 600px;
+	background: #0000f6;
+}
+
+div#slogan{
+	width: 320px;
+	height: 200px;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	color: red;
+	background: url(../img/instruye.jpg) no-repeat center;
+	text-align: center;
+}
+
+
+div#infoBasica{
+	width: 320px;
+	height: 200px;
+	position: absolute;
+	top: 0px;
+	left: 320px;
+	text-align: center;
+}
+
+div#infoBasica h1{
+	font-family: Georgia;
+	font-size: 20px;
+}
+
+div#logo{
+	width: 320px;
+	height: 200px;
+	position: absolute;
+	top: 0px;
+	left: 640px;
+	background: url(../img/headindex.png) no-repeat center;
+}
+*/
