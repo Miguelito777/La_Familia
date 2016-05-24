@@ -1,5 +1,6 @@
+var docenteTareasAsignadas = [];
 function colegioGrados(){
-		document.getElementById("session").innerHTML = "<button type='button' class='btn btn-link' onclick= 'window.location.href = \"controlador.php?cerrarSession=true\"'>Cerrar sesión</button>";
+	document.getElementById("session").innerHTML = "<button type='button' class='btn btn-link' onclick= 'window.location.href = \"controlador.php?cerrarSession=true\"'>Cerrar sesión</button>";
 	var colegioGradosAct = new Colegio();
 	colegioGradosAct.obtenerGrados();
 	setTimeout(function(){
@@ -440,6 +441,7 @@ function asignarTareas(){
 							var listaMes = document.getElementById("mesEntrega");
 							var valorSeleccionadovalue = listaMes.options[listaMes.selectedIndex].value;
 							var listaDia = document.getElementById("diaEntrega");
+							var horaEntrega = document.getElementById("horaEntrega").value;
 							var valorSelectDia = listaDia.options[listaDia.selectedIndex].value;
 							var mesInt = parseInt(valorSeleccionadovalue);
 							var diaInt = parseInt(valorSelectDia);
@@ -507,17 +509,21 @@ function asignarTareas(){
 			},1000);
 		}
 		else{
-			console.log("Hola mundo desde asignar tareas");
+			// Le asigno el botton para eliminar la tarea
+			docenteTareasAsignadas = curso.tareas_array;
 			for (var i = 0; i < curso.tareas_array.length; i++) {
-				curso.tareas_array[i].shift();
+				curso.tareas_array[i].push("<button type='button' class='btn btn-link' id="+i+" onclick = 'deleteTarea(this.id)'>eliminar</button>");
 			};
 			var obj = { width: 1095, height: 447, title: "Asignación de Tareas",resizable:false,draggable:false };
 			obj.colModel = 
 			[
+				{ title: "codigo", width: 25, dataType: "string", align: "center", editable: false},
 				{ title: "Titulo", width: 273, dataType: "string", align: "center", editable: true},
-				{ title: "Fecha de Asignacion", width: 135, dataType: "integer", align: "center", editable: false},
-				{ title: "Fecha de Entrega", width: 125, dataType: "integer", align: "center", editable: true },
-				{ title: "Descripción", width: 350, dataType: "integer", align: "center", editable: true }
+				{ title: "Fecha Asignacion", width: 135, dataType: "integer", align: "center", editable: false},
+				{ title: "Fecha Entrega", width: 125, dataType: "integer", align: "center", editable: true },
+				{ title: "Hora entrega", width: 125, dataType: "integer", align: "center", editable: true },
+				{ title: "Descripción", width: 200, dataType: "integer", align: "center", editable: true},
+				{ title: "Opciones", width: 125, dataType: "integer", align: "center", editable: false}
 			];
 			obj.dataModel = { data: curso.tareas_array};
 			var $grid = $("#tareasAsignadas").pqGrid(obj);
@@ -771,6 +777,7 @@ function asigNotasTareas(){
                     	}
 
                         var json_stringg = JSON.stringify(output);
+
                        $.ajax(
                         {
                             data: {"notasAsignadasUpdate":json_stringg},
@@ -780,7 +787,7 @@ function asigNotasTareas(){
                             success: function(data) 
                             {
                                 window.location="docentes.html"
-                                console.log(data);
+                                //console.log(data);
                             }
                         })
                         .done(function( data, textStatus, jqXHR ) 
@@ -798,6 +805,7 @@ function asigNotasTareas(){
                                 console.log( "La solicitud a falladoooooo: " +  textStatus);
                             }
                         });
+
         			});	
 }
 
@@ -1205,4 +1213,10 @@ function obtenerDiasMes(){
    			$("#diaEntrega").append("<option value="+0+" selected>Seleccione un dia</option>");
 		}
    	})
+}
+
+
+function deleteTarea(posicionEliminar){
+	console.log("Voy a eliminar la tarea "+docenteTareasAsignadas[posicionEliminar]);
+
 }

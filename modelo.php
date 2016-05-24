@@ -119,7 +119,7 @@ class Colegio extends conexion
 	}
 
 	function obtenerGrados(){
-		$query = "SELECT * from Grados where Anio_idanio = 1";
+		$query = "SELECT * from Grados where Anio_idanio = 2";
 		if (!parent:: __construct())
 			die ("Error en la conexion para buscar a un estudiante"+mysql_error());
 		mysql_query("SET NAMES 'utf8'");
@@ -142,17 +142,17 @@ class PDF extends FPDF
 	function Header()
 	{
     	// Logo
-    	$this->Image('images/headindex.png',10,8,33);
+    	//$this->Image('images/headindex.png',10,8,33);
     	// Arial bold 15
     	$this->SetFont('Arial','B',15);
     	// Movernos a la derecha
     	$this->Cell(50);
     	// Título
-    	$this->Cell(100,10,'Colegio Privado Mixto La Familia',0,0,'C');
+    	$this->Cell(100,10,'Colegio Cientifico y Tecnologico EL PEDREGAL',0,0,'C');
     	$this->Ln(5);
     	$this->SetFont('Arial','B',10);
     	$this->Cell(50);
-    	$this->Cell(100,10,'6a. Av. 1-47 Zona 1',0,0,'C');
+    	$this->Cell(100,10,'Direccion',0,0,'C');
     	$this->Ln(5);
     	$this->SetFont('Arial','B',7);
     	$this->Cell(50);
@@ -383,10 +383,10 @@ class tareas extends conexion
 	}
 
 	function actualizar_nota($idtarea,$idestudiante,$notaInt,$observacion){
-		$nota = (string)$notaInt;
+		$nota = (int)$notaInt;
 		$idEstudiante = (int)$idestudiante;
 		$idTarea = (int)$idtarea;
-		$query = "UPDATE Nota_tareas SET Punteo_Tarea = '$nota', ObservacionTarea = '$observacion' where Tareas_idTarea = $idTarea and Estudiantes_idEstudiante = $idEstudiante";
+		$query = "UPDATE Nota_tareas SET Punteo_Tarea = $nota, ObservacionTarea = '$observacion' where Tareas_idTarea = $idTarea and Estudiantes_idEstudiante = $idEstudiante";
 		if (!parent:: __construct()){
 			die("Error al conectarme para almacenar la nota de la tarea del estudiante "+mysql_error());
 			return false;
@@ -395,6 +395,22 @@ class tareas extends conexion
 		echo "Ahrota voy a realizar la transaccion";
 		if (!mysql_query($query)) {
 			//die("Error al realizar la consulta para almacenal la nota de la tarea de un estudiante" +mysql_error());
+			echo "Error al actualizar la nota";
+			return false;
+		}
+		$this->closeconnect();
+		return true;	
+	}
+
+	function eliminar_nota($idtarea,$idestudiante){
+		$idEstudiante = (int)$idestudiante;
+		$idTarea = (int)$idtarea;
+		$query = "DELETE from Nota_tareas where Tareas_idTarea = $idTarea and Estudiantes_idEstudiante = $idEstudiante";
+		if (!parent:: __construct()){
+			die("Error al conectarme para almacenar la nota de la tarea del estudiante "+mysql_error());
+			return false;
+		}
+		if (!mysql_query($query)) {
 			echo "Error al actualizar la nota";
 			return false;
 		}
@@ -528,7 +544,7 @@ class Cursos extends conexion
 			return false;
 	}
 	function consultarTareas(){
-		$query = "SELECT T.idTarea, T.nombreTarea, T.fechaasignacionTarea, T.fechaentregaTarea, T.descripcionTarea from Tareas T inner join Periodos_docentes PD on T.Periodos_docentes_id_periodos_docentes = PD.id_periodos_docentes and id_periodos_docentes = $this->idCurso and T.Unidad = $this->unidad";
+		$query = "SELECT T.idTarea, T.nombreTarea, T.fechaasignacionTarea, T.fechaentregaTarea, T.horaEntrega, T.descripcionTarea from Tareas T inner join Periodos_docentes PD on T.Periodos_docentes_id_periodos_docentes = PD.id_periodos_docentes and id_periodos_docentes = $this->idCurso and T.Unidad = $this->unidad";
 		if(!parent:: __construct())
 			die("Error al buscar a las tareas"+mysql_error());
 		if(!$this->tareas = mysql_query($query))

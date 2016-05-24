@@ -2,7 +2,7 @@
 	session_start();
 	require 'fpdf.php';
 	include 'modelo.php';
-	$_SESSION["unidad"] = 2;
+	$_SESSION["unidad"] = 1;
 	if (isset($_GET["relGradoCurso"])) {
 		echo "Tengo el grado a relacionar";
 	}
@@ -1194,6 +1194,14 @@ function utf8_encode_recursive ($array)
                 							$tareaNotas->actualizar_nota($tareasAntiguas[$j][0],$estudiantesNotas[$i][0],$value,"");
                 						}
                 					}
+                				}
+                			}
+                			if ($value == "" || $value == "<br>") {
+                				if (!$notasAntiguas[$i][$j]) {
+                					//$tareaNotas->eliminar_nota($tareasAntiguas[$j][0],$estudiantesNotas[$i][0]);
+                				}
+                				else{
+                					$tareaNotas->eliminar_nota($tareasAntiguas[$j][0],$estudiantesNotas[$i][0]);
                 				}
                 			}
                 		}
