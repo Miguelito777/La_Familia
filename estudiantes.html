@@ -78,14 +78,27 @@
 </div>
 </div>
     <ul class="nav nav-tabs" role="tablist" id="myTab">
-        <li role="presentation" class="active"><a href="#tareas" aria-controls="tareas" role="tab" data-toggle="tab" onclick="mostrarTareas()">Tareas Asignadas</a></li>
-        <li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab" onclick="verCursos()">Ver Nota de Tareas</a></li>
-        <li role="presentation"><a href="#parciales" aria-controls="parciales" role="tab" data-toggle="tab" onclick="notasParciales()">Ver notas de examenes de unidad</a></li>
-        <li role="presentation"><a href="#examenesBimestrales" aria-controls="examenesBimestrales" role="tab" data-toggle="tab" onclick="notasBimestrales()">Ver notas de unidad</a></li>
-      
+        <li role="presentation" class="active"><a href="#noticias" aria-controls="noticias" role="tab" data-toggle="tab" onclick="showNoticies()">Inicio</a></li>
+        <li role="presentation"><a href="#tareas" aria-controls="tareas" role="tab" data-toggle="tab" onclick="showCourses()">Mis Cursos</a></li>
+        <li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab" onclick="verCursos()">Zonas</a></li>
+        <li role="presentation"><a href="#parciales" aria-controls="parciales" role="tab" data-toggle="tab" onclick="notasParciales()">Nota de Examenes</a></li>
+        <li role="presentation"><a href="#examenesBimestrales" aria-controls="examenesBimestrales" role="tab" data-toggle="tab" onclick="notasBimestrales()">Notas Totales</a></li>
     </ul>
     <div class="tab-content">
-        <div role="tabpanel" class="tab-pane active" id="tareas"></div>
+        <div role="tabpanel" class="tab-pane active" id="noticias">
+            <div class="row">
+                <div class="col-xs-2"></div>
+                <div class="col-xs-8" id="notices"></div>
+                <div class="col-xs-2"></div>
+            </div>
+        </div>
+        <div role="tabpanel" class="tab-pane" id="tareas">
+            <div class="row">
+                <div class="col-xs-2"></div>
+                <div class="col-xs-8" id="courses"></div>
+                <div class="col-xs-2"></div>
+            </div>
+        </div>
         <div role="tabpanel" class="tab-pane" id="messages">
             <div class="row">
                 <div class="col-xs-2"></div>
@@ -106,9 +119,12 @@ $('#myTab a:last').tab('show')
 <script type="text/javascript" src="js/bootstrap.js"></script>
 <script type="text/javascript" src="js/modelo.js"></script>
 <script type="text/javascript" src="js/controlador.js"></script>
+<script type="text/javascript" src="js/modeloV2.js"></script>
+<script type="text/javascript" src="js/controladorV2.js"></script>
 <script>
     cargarEstudiante();
-    mostrarTareas(); 
+    //mostrarTareas();
+    showNoticiesGrade();
 </script>
 </body>
 </html>

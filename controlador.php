@@ -1,7 +1,8 @@
 <?php
-	session_start();
 	require 'fpdf.php';
 	include 'modelo.php';
+	session_start();
+
 	$_SESSION["unidad"] = 1;
 	if (isset($_GET["relGradoCurso"])) {
 		echo "Tengo el grado a relacionar";
@@ -311,6 +312,18 @@
 		 	}
 		 	$i++;
 		 } 
+		 $tareas_object = utf8_encode_recursive($tareasa); 
+		echo json_encode($tareas_object);
+		
+	}
+	if (isset($_GET["getCourses"])) {
+		$tareas = new Cursos();
+		$tareas->consultar($_SESSION["grado_estudiante"]);
+		$tareasa = array();
+		$i = 0;
+		while ($tarea = $tareas->obtener()) {
+			array_push($tareasa, $tarea);
+		} 
 		 $tareas_object = utf8_encode_recursive($tareasa); 
 		echo json_encode($tareas_object);
 		
@@ -629,14 +642,13 @@
 	}
 
 	if (isset($_POST["administrador"])) {
-		if (isset($_SESSION["nombreAdmin"])) {
+		if (isset($_SESSION["nombreAdmin"]) && isset($_SESSION["idSysAdmin"])) {
 			$nombreSysAdmin = $_SESSION["nombreAdmin"];
 			echo "$nombreSysAdmin";
 		}
 		else{
-			echo "Favor de iniciar session";
+			echo false;
 		}
-
 	}
 
 	
@@ -645,7 +657,8 @@
 		if (isset($_SESSION["id_estudiante"])) {
 			$estudiante = new Estudiantes();
 			$estudiante->setIdEstudiante($_SESSION["id_estudiante"]);
-			echo $estudiante->estudiante_nombre();
+			$da = $estudiante->estudiante_nombre();
+			echo "$da";
 		}
 		else{
 			echo "Favor de iniciar session";
@@ -1103,6 +1116,7 @@ function utf8_encode_recursive ($array)
         	if (isset($_SESSION["id_docente"])) {
         		$asigTarCurso = new Cursos();
                 $_SESSION["cursoGeneral"] = $_GET["asigTarCurso"];
+                $_SESSION["gradoTarea"] = $_GET["asigTarGrado"];
                 $asigTarCurso->setIdCurso($_SESSION["cursoGeneral"]);
                 $asigTarCurso->setUnidad($_SESSION["unidad"]);
                 $asigTarCurso->consultarTareas();
@@ -1156,14 +1170,13 @@ function utf8_encode_recursive ($array)
                 $curso->setIdCurso($_SESSION["cursoGeneral"]);
                 $curso->setUnidad($_SESSION["unidad"]);
                 $tareasAntiguas = $_SESSION["tarNotasAsig"];
-                
                 for ($i = 0; $i < count($tareasAntiguas); $i++) { 
-                	$curso->actualizarTarea($tareasAsignadasUpdate[$i]["Titulo"],$tareasAsignadasUpdate[$i]["fAsignacion"],$tareasAsignadasUpdate[$i]["fEntrega"],$tareasAsignadasUpdate[$i]["descripcionTarea"],$tareasAntiguas[$i][0]);
+                	$curso->actualizarTarea($tareasAsignadasUpdate[$i]["Titulo"],$tareasAsignadasUpdate[$i]["fAsignacion"],$tareasAsignadasUpdate[$i]["fEntrega"],$tareasAsignadasUpdate[$i]["descripcionTarea"],$tareasAntiguas[$i][0],$tareasAsignadasUpdate[$i]["hEntrega"],$tareasAsignadasUpdate[$i]["tipoEntrega"],$tareasAsignadasUpdate[$i]["valor"]);
                 }
 
                 if (count($tareasAsignadasUpdate) > count($tareasAntiguas)) {
                 	for ($i = count($tareasAntiguas); $i < count($tareasAsignadasUpdate); $i++) { 
-                		$curso->asignarTarea($tareasAsignadasUpdate[$i]["Titulo"],$tareasAsignadasUpdate[$i]["fAsignacion"],$tareasAsignadasUpdate[$i]["fEntrega"],$tareasAsignadasUpdate[$i]["descripcionTarea"]);
+                		$curso->asignarTarea($tareasAsignadasUpdate[$i]["Titulo"],$tareasAsignadasUpdate[$i]["fAsignacion"],$tareasAsignadasUpdate[$i]["fEntrega"],$tareasAsignadasUpdate[$i]["descripcionTarea"], $tareasAsignadasUpdate[$i]["hEntrega"],$tareasAsignadasUpdate[$i]["tipoEntrega"],$tareasAsignadasUpdate[$i]["valor"], $_SESSION["gradoTarea"]);
                 	}
                 }
         }
@@ -1267,4 +1280,192 @@ function utf8_encode_recursive ($array)
         	session_destroy();
         	header("Location:registros.html");
         }
+if (isset($_GET["searchWork"])) {
+	$_SESSION["sessionCourse"] = $_GET["searchWork"];
+	header("Location:dashboard.html");
+}
+if (isset($_GET["getWorks"])) {
+	$curso = new Cursos();
+	$curso->setIdCurso($_SESSION["sessionCourse"]);
+	$curso->setUnidad($_SESSION["unidad"]);
+	$curso->consultarTareas();
+	$tareasa = array();
+	while($tarea = $curso->extraerTarea()) {
+		array_push($tareasa, $tarea);
+	}
+	$tareasa = utf8_encode_recursive($tareasa);
+	echo json_encode($tareasa);
+}
+
+if (isset($_POST["newNotice"])) {
+	$newNotice = json_decode($_POST["newNotice"],true);
+	$newNoticeJson = $_SESSION["Docente"]->setNotice($newNotice["idCurso"],$newNotice["notice"],$_SESSION["unidad"]);
+	echo "$newNoticeJson";
+}
+if (isset($_GET["getNotices"])) {
+	$notices = $_SESSION["Docente"]->getNotices($_GET["getNotices"],$_SESSION["unidad"]);
+	echo "$notices";
+}
+
+if (isset($_GET["getNoticesStudentGrade"])) {
+	$notices = $_SESSION["Estudiante"]->getNoticesGrade($_SESSION["unidad"]);
+	$notices = utf8_encode_recursive($notices);
+	echo json_encode($notices);
+}
+if (isset($_GET["getNoticesStudentCourse"])) {
+	$notices = $_SESSION["Estudiante"]->getNotices($_SESSION["sessionCourse"],$_SESSION["unidad"]);
+	echo $notices;
+}
+
+if (isset($_GET["searchWorkDigitalDetails"])) {
+	$idTareaDigital = $_GET["searchWorkDigitalDetails"];
+	$idEstudiante = $_SESSION['Estudiante']->idEstudiante;
+	$_SESSION["Tarea"] = new tareas();
+	$_SESSION["Tarea"]->idTarea = $idTareaDigital;
+	$_SESSION["Tarea"]->getDetailsDigitalWork($_SESSION["Tarea"]->idTarea, $_SESSION["Estudiante"]->idEstudiante);
+	header("Location:showDigitalWork.html");
+}
+if (isset($_GET["getDetailDigitalWork"])) {
+	$detailDigitalWork = utf8_encode_recursive($_SESSION["Tarea"]->detailWork);
+	echo json_encode($detailDigitalWork);
+}
+if (isset($_GET["setDigitalWork"])) {
+	$pathWork = $_GET["setDigitalWork"];
+	$saveDigitalWork = $_SESSION["Tarea"]->setDigitalWork($_SESSION["Estudiante"]->idEstudiante,$pathWork);
+	if ($saveDigitalWork) 
+		echo true;
+	else
+		echo false;
+}
+
+        if(isset($_GET["pluckingWorkGrade"]) && isset($_GET["pluckingWorkCourse"])){
+        	if (isset($_SESSION["id_docente"])) {
+                $_SESSION["pluckingWorkGrade"] = $_GET["pluckingWorkGrade"];
+                $_SESSION["pluckingWorkCourse"] = $_GET["pluckingWorkCourse"];
+                
+        		header('Location: pluckingWork.html');
+        	}
+        	else
+        		header('Location:registros.html'); 
+        }
+        if (isset($_GET["getWorksPluckings"])) {
+        	if (isset($_SESSION["id_docente"])) {
+        		$asigTarCurso = new Cursos();
+        		$asigTarCurso->setIdCurso($_SESSION["pluckingWorkCourse"]);
+            	$asigTarCurso->setUnidad($_SESSION["unidad"]);
+                $asigTarCurso->consultarTareas();
+                $i = 0;
+                $tareasCurso = array();
+                while ($tareaCurso = $asigTarCurso->extraerTarea()){
+                        $j = 0;
+                        foreach($tareaCurso as $key => $value){
+                                $tareasCurso[$i][$j] = $value;
+                                $j++;
+                        }
+                        $i++;
+				}
+				$tareasCurso = utf8_encode_recursive($tareasCurso);
+                echo json_encode($tareasCurso);	
+            }
+        	else
+        		header('Location:registros.html'); 
+        }
+        if (isset($_GET["pluckingWorkIdWork"])) {
+        	if (isset($_SESSION["id_docente"])) {
+        		$_SESSION["pluckingWorkIdWork"] = $_GET["pluckingWorkIdWork"];
+        		header('Location: pluckingWorkStudents.html');
+        	}
+        	else
+        		header('Location:registros.html'); 		
+        }
+        if (isset($_GET["getWorksPluckingsStudents"])) {
+        	if (isset($_SESSION["id_docente"])) {
+        		$grado = new Grado();
+        		$grado->setIdGrado($_SESSION["pluckingWorkGrade"]);
+                $grado->obtenerEstudiantes();
+                $i = 0;
+                $gradeStudent = array();
+                while ($student = $grado->obtenerEstudiantesExtraer()){
+                	array_push($gradeStudent, $student);
+				}
+				$gradeStudent = utf8_encode_recursive($gradeStudent);
+                echo json_encode($gradeStudent);	
+            }
+        	else
+        		header('Location:registros.html');
+        }
+        if (isset($_GET["pluckingWorkIdStudent"])) {
+        	$_SESSION["pluckingWorkStudent"] = new tareas();
+        	$_SESSION["pluckingWorkIdStudent"] = $_GET["pluckingWorkIdStudent"];
+        	$getPluckingWorkStudent = $_SESSION["pluckingWorkStudent"]->getPluckingWorkStudent($_SESSION["pluckingWorkIdWork"],$_SESSION["pluckingWorkIdStudent"]);
+        	$getPluckingWorkStudent = utf8_encode_recursive($getPluckingWorkStudent);
+        	echo json_encode($getPluckingWorkStudent);
+        }
+        if (isset($_POST["savePluckingWorkStudent"])) {
+			$asignation = json_decode($_POST["savePluckingWorkStudent"],true);
+			if($_SESSION["pluckingWorkStudent"]->setPluckingWorkStudent($_SESSION["pluckingWorkIdWork"],$_SESSION["pluckingWorkIdStudent"],$asignation["nota"], $asignation["observacion"]))
+				echo true;
+			else
+				echo false;
+        }
+
+
+
+
+        /*Scrip para asignar una notica a grados espesificos*/
+        /* Scrip correspondiente a la administracion*/
+        if (isset($_POST["newNoticeGrades"])) {
+        	if (isset($_SESSION["idSysAdmin"])) {
+        		$_SESSION["newNoticeGrades"] = json_decode($_POST["newNoticeGrades"],true);
+        		$_SESSION["noticesGrades"] = new Colegio();
+        		echo true;
+        	}
+        	else
+        		echo false;
+        }
+        if (isset($_POST["postNotice"])) {
+        	$postNotice = json_decode($_POST["postNotice"],true);
+        	if($_SESSION["noticesGrades"]->postNotice($_SESSION["newNoticeGrades"],$postNotice["textContent"], $postNotice["fileContent"], $_SESSION["unidad"]))
+        		echo true;
+        	else
+        		echo false;
+        }
+
+
+        /* 
+        *	Segmento que se ejecuta para Administrar los recursos subidos a los cursos
+        */
+                // Script que se ejecuta cuando el usuario ingresa a la opcion Asignar Tareas
+        if(isset($_GET["asigRecCurso"])){
+        	if (isset($_SESSION["id_docente"])) {
+        		$_SESSION["Curso"] = new Cursos();
+        		$_SESSION["Curso"]->setIdCurso($_GET["asigRecCurso"]);
+        		$_SESSION["Curso"]->setUnidad($_SESSION["unidad"]);
+        		header('Location: uploadResourses.html');
+        	}
+        	else
+        		header('Location:registros.html'); 
+        }
+        if (isset($_GET["getResources"])) {
+        	if (isset($_SESSION["id_docente"])) {
+        		$resources = $_SESSION["Curso"]->getResources();
+        		echo json_encode($resources);
+        	}    
+        	else
+        		header('Location:registros.html');     	
+        }
+        if (isset($_GET["addResource"])) {
+        	$resource = json_decode($_GET["addResource"],true);
+        	$resource = $_SESSION["Curso"]->setResources($resource["descriptionResource"],$resource["fileResource"], $_SESSION["unidad"]);
+        	echo json_encode($resource);
+        }
+
+        /*
+        *		Resources Students
+        */
+
+        if (isset($_GET["getResourcesStudents"])) {
+			$notices = $_SESSION["Estudiante"]->getResources($_SESSION["sessionCourse"],$_SESSION["unidad"]);
+			echo $notices;
+		}
 ?>

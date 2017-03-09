@@ -1,16 +1,63 @@
+var curso = new Cursos();
+var obj;
 var docenteTareasAsignadas = [];
+var allCursos;
+var cursoSelect;
+var docente;
+var tarea = {};
+var colegioGradosAct = new Colegio();
+var asignations;
+
 function colegioGrados(){
+	document.getElementById("menuPrincipal").innerHTML = "<button type='button' class='btn btn-link' onclick= 'window.location.href = \"estudiantes.html\"'>Menú Principal</button>";
 	document.getElementById("session").innerHTML = "<button type='button' class='btn btn-link' onclick= 'window.location.href = \"controlador.php?cerrarSession=true\"'>Cerrar sesión</button>";
-	var colegioGradosAct = new Colegio();
-	colegioGradosAct.obtenerGrados();
-	setTimeout(function(){
-		$("#asignaciones").append("<table class='table table-hover' id='tables'> <tr class='success'><th>Grado</th><th>Seccion</th><th>Jornada</th><th>Notas de Unidad</th><th>Solvencia</th></tr></table>");
-		for (var i = 0; i < colegioGradosAct.grados_arrayJavascript.length ; i++) {
-			$("#tables").append("<tr><td>"+colegioGradosAct.grados_arrayJavascript[i][1]+"</td><td>"+colegioGradosAct.grados_arrayJavascript[i][2]+"</td><td>"+colegioGradosAct.grados_arrayJavascript[i][3]+"</td><td><button type='button' class='btn btn-link' onclick= 'window.location.href = \"controlador.php?imprimirNotasUnidad="+colegioGradosAct.grados_arrayJavascript[i][0]+"&nombreGrado="+colegioGradosAct.grados_arrayJavascript[i][1]+"&seccionGrado="+colegioGradosAct.grados_arrayJavascript[i][2]+"&jornadaGrado="+colegioGradosAct.grados_arrayJavascript[i][3]+"\"'>Imprimir</button></td><td><button type='button' class='btn btn-link' onclick= 'window.location.href = \"controlador.php?solvenciaGrado="+colegioGradosAct.grados_arrayJavascript[i][0]+"\"'>Establecer</button></td></tr>");
-		};
-	},2000);
+	$("#asignaciones").append("<div style='text-align:center'><img src='img/Loading_icon.gif'></div>");
+	colegioGradosAct.obtenerGrados();	
+}
+function showGrades(grados_objctJavascript){
+	asignations = grados_objctJavascript;
+	document.getElementById("asignaciones").innerHTML = '';
+	$("#asignaciones").append("<table class='table table-hover' id='tables'> <tr class='success'><th>Grado</th><th>Seccion</th><th>Jornada</th><th>Notas de Unidad</th><th>Solvencia</th><th>Notificacion <input type='checkbox' onchange='allGradesCheckedTrue();'></th></tr></table>");
+	for (var i = 0; i < grados_objctJavascript.length ; i++) {
+		$("#tables").append("<tr><td>"+grados_objctJavascript[i][1]+"</td><td>"+grados_objctJavascript[i][2]+"</td><td>"+grados_objctJavascript[i][3]+"</td><td><button type='button' class='btn btn-link' onclick= 'window.location.href = \"controlador.php?imprimirNotasUnidad="+grados_objctJavascript[i][0]+"&nombreGrado="+grados_objctJavascript[i][1]+"&seccionGrado="+grados_objctJavascript[i][2]+"&jornadaGrado="+grados_objctJavascript[i][3]+"\"'>Imprimir</button></td><td><button type='button' class='btn btn-link' onclick= 'window.location.href = \"controlador.php?solvenciaGrado="+grados_objctJavascript[i][0]+"\"'>Establecer</button></td><td><input type='checkbox' id="+i+" onchange='prepareNotice(this.id)'></td></tr>");
+	};
 }
 
+function prepareNotice(positionPrepareNotice){
+	var found = colegioGradosAct.noticeGrades.indexOf(asignations[positionPrepareNotice][0]);
+	if (found >= 0) 
+		colegioGradosAct.noticeGrades.splice(found,1);	
+	else
+		colegioGradosAct.addGrade(asignations[positionPrepareNotice][0]);
+}
+
+function allGradesCheckedTrue(){
+	document.getElementById("asignaciones").innerHTML = '';
+	$("#asignaciones").append("<table class='table table-hover' id='tables'> <tr class='success'><th>Grado</th><th>Seccion</th><th>Jornada</th><th>Notas de Unidad</th><th>Solvencia</th><th>Notificacion <input type='checkbox' onchange='allGradesCheckedFalse();' checked></th></tr></table>");
+	for (var i = 0; i < asignations.length ; i++) {
+		var found = colegioGradosAct.noticeGrades.indexOf(asignations[i][0]);
+		if (found < 0) 
+			colegioGradosAct.addGrade(asignations[i][0]);		
+		$("#tables").append("<tr><td>"+asignations[i][1]+"</td><td>"+asignations[i][2]+"</td><td>"+asignations[i][3]+"</td><td><button type='button' class='btn btn-link' onclick= 'window.location.href = \"controlador.php?imprimirNotasUnidad="+asignations[i][0]+"&nombreGrado="+asignations[i][1]+"&seccionGrado="+asignations[i][2]+"&jornadaGrado="+asignations[i][3]+"\"'>Imprimir</button></td><td><button type='button' class='btn btn-link' onclick= 'window.location.href = \"controlador.php?solvenciaGrado="+asignations[i][0]+"\"'>Establecer</button></td><td><input type='checkbox' id="+i+" onchange='prepareNotice(this.id);' checked></td></tr>");
+	};
+}
+function allGradesCheckedFalse(){
+	document.getElementById("asignaciones").innerHTML = '';
+	$("#asignaciones").append("<table class='table table-hover' id='tables'> <tr class='success'><th>Grado</th><th>Seccion</th><th>Jornada</th><th>Notas de Unidad</th><th>Solvencia</th><th>Notificacion <input type='checkbox' onchange='allGradesCheckedTrue();' ></th></tr></table>");
+	for (var i = 0; i < asignations.length ; i++) {
+		var found = colegioGradosAct.noticeGrades.indexOf(asignations[i][0]);
+		if (found >= 0) 
+			colegioGradosAct.noticeGrades.splice(found,1);			
+		$("#tables").append("<tr><td>"+asignations[i][1]+"</td><td>"+asignations[i][2]+"</td><td>"+asignations[i][3]+"</td><td><button type='button' class='btn btn-link' onclick= 'window.location.href = \"controlador.php?imprimirNotasUnidad="+asignations[i][0]+"&nombreGrado="+asignations[i][1]+"&seccionGrado="+asignations[i][2]+"&jornadaGrado="+asignations[i][3]+"\"'>Imprimir</button></td><td><button type='button' class='btn btn-link' onclick= 'window.location.href = \"controlador.php?solvenciaGrado="+asignations[i][0]+"\"'>Establecer</button></td><td><input type='checkbox' id="+i+" onchange='prepareNotice(this.id);'></td></tr>");
+	};
+}
+$("#newNotice").click(newNotice);
+function newNotice(){
+	if (colegioGradosAct.noticeGrades.length > 0)
+		colegioGradosAct.newNotice();
+	else
+		alert("Seleccione un grado a asignar la noticia");
+}
 function colegioGradosRel(){
 	document.getElementById("session").innerHTML = "<button type='button' class='btn btn-link' onclick= 'window.location.href = \"controlador.php?cerrarSession=true\"'>Cerrar sesión</button>";
 	var colegioGradosAct = new Colegio();
@@ -29,7 +76,7 @@ function cargar(){
 	eventbuttons.asignacionestodas();
 	document.getElementById("session").innerHTML = "<button type='button' class='btn btn-link' onclick= 'window.location.href = \"controlador.php?cerrarSession=true\"'>Cerrar sesión</button>";
 	document.getElementById("asignaciones").innerHTML = "<h1>Buscando sus asignaciones...</h1>";
-} 
+}
 
 function nombreDocente(){
 	docente.mostrar_nombre();
@@ -41,8 +88,7 @@ function datosAdmin(){
 }
 
 function login(){
-	
-	usuario = $("#usuariocol").val();
+	var usuario = $("#usuariocol").val();
 	var password = $("#passwordcol").val();
 	if (usuario != "" && password != "") {
 		$.ajax({
@@ -242,10 +288,11 @@ var eventbuttons = {
 
 var documento = {
 	asignaciones_mostrar: function(asignaciones){
+		allCursos = asignaciones;		
 		document.getElementById("asignaciones").innerHTML="";
-		$("#asignaciones").append("<table class='table table-hover' id='tables'> <tr class='success'><th>Grado</th><th>Seccion</th><th>Jornada</th><th>Curso</th><th>Nueva Tarea</th><th>Nota de Tareas</th><th>Notas Examen de Unidad</th><th>Progreso Estudiantes</th></tr></table>");
+		$("#asignaciones").append("<table class='table table-hover' id='tables'> <tr class='success'><th>Grado</th><th>Seccion</th><th>Jornada</th><th>Curso</th><th>Noticias</th><th>Nueva Tarea</th><th>Recursos</th><th>Calificar tareas</th><th>Zonas</th><th>Notas Examenes</th><th>Totales</th></tr></table>");
 		for (var i = 0; i < asignaciones.length ; i++) {
-			$("#tables").append("<tr><td>"+asignaciones[i][2]+"</td><td>"+asignaciones[i][3]+"</td><td>"+asignaciones[i][4]+"</td><td>"+asignaciones[i][5]+"</td><td> <button type='button' class='btn btn-link' id="+asignaciones[i][0]+" onclick= 'window.location.href = \"controlador.php?asigTarGrado="+asignaciones[i][1]+"&asigTarCurso="+asignaciones[i][0]+"\"'>Asignar</button></td><td> <button type='button' class='btn btn-link' id="+asignaciones[i][0]+" onclick = 'window.location.href = \"controlador.php?asigNotTarGrado="+asignaciones[i][1]+"&asigNotTarCurso="+asignaciones[i][0]+"\"'>Asignar</button></td><td> <button type='button' class='btn btn-link' id="+asignaciones[i][0]+" onclick='window.location.href=\"controlador.php?gradoParciales="+asignaciones[i][1]+"&cursoParciales="+asignaciones[i][0]+"\"'>Asignar</button></td><td> <button type='button' class='btn btn-link' id="+asignaciones[i][0]+" onclick = 'window.location.href=\"controlador.php?gradoBimestrales="+asignaciones[i][1]+"&cursoBimestrales="+asignaciones[i][0]+"\"'>Visualizar</button></td></tr>");
+			$("#tables").append("<tr><td>"+asignaciones[i][2]+"</td><td>"+asignaciones[i][3]+"</td><td>"+asignaciones[i][4]+"</td><td>"+asignaciones[i][5]+"</td><td><button type='button' class='btn btn-link' id="+i+" onclick='setNotice(this.id);'><span class='glyphicon glyphicon-blackboard'></span></button></td><td> <button type='button' class='btn btn-link' id="+asignaciones[i][0]+" onclick= 'window.location.href = \"controlador.php?asigTarGrado="+asignaciones[i][1]+"&asigTarCurso="+asignaciones[i][0]+"\"'><span class='glyphicon glyphicon-pencil'></span></button></td><td> <button type='button' class='btn btn-link' id="+asignaciones[i][0]+" onclick= 'window.location.href = \"controlador.php?asigRecCurso="+asignaciones[i][0]+"\"'><span class='glyphicon glyphicon-pencil'></span></button></td><td><button type='button' class='btn btn-link' id="+i+" onclick='setPluckingWork(this.id);'><span class='glyphicon glyphicon-blackboard'></span></button></td><td> <button type='button' class='btn btn-link' id="+asignaciones[i][0]+" onclick = 'window.location.href = \"controlador.php?asigNotTarGrado="+asignaciones[i][1]+"&asigNotTarCurso="+asignaciones[i][0]+"\"'><span class='glyphicon glyphicon-ok'></span></button></td><td> <button type='button' class='btn btn-link' id="+asignaciones[i][0]+" onclick='window.location.href=\"controlador.php?gradoParciales="+asignaciones[i][1]+"&cursoParciales="+asignaciones[i][0]+"\"'><span class='glyphicon glyphicon-list-alt'></span></button></td><td> <button type='button' class='btn btn-link' id="+asignaciones[i][0]+" onclick = 'window.location.href=\"controlador.php?gradoBimestrales="+asignaciones[i][1]+"&cursoBimestrales="+asignaciones[i][0]+"\"'><span class='glyphicon glyphicon-star'></span></button></td></tr>");
 		}; 	
 	},
 	tareas_mostrar : function (tareass,grado){
@@ -407,122 +454,28 @@ function notasdetareas(){
 function asignarTareas(){
 	document.getElementById("menuPrincipal").innerHTML = "<button type='button' class='btn btn-link' style='margin:auto' onclick= 'window.location.href = \"docentes.html\"'>Menú Principal</button>";
 	document.getElementById("session").innerHTML = "<button type='button' class='btn btn-link' onclick= 'window.location.href = \"controlador.php?cerrarSession=true\"'>Cerrar sesión</button>";
-	var curso = new Cursos();
 	curso.solicitarTareas();
-	document.getElementById("tareasAsignadas").innerHTML = "<h1>Buscando tareas asignadas...</h1>";
-	setTimeout(function(){
-		if (curso.tareas_array === undefined) {
-			setTimeout(function(){
-				if (curso.tareas_array === undefined) {
-					setTimeout(function(){
-						for (var i = 0; i < curso.tareas_array.length; i++) {
-							curso.tareas_array[i].shift();
-						};
-						var obj = { width: 1095, height: 447, title: "Asignación de Tareas",resizable:false,draggable:false };
-						obj.colModel = 
-						[
-							{ title: "Titulo", width: 273, dataType: "string", align: "center", editable: true},
-							{ title: "Fecha de Asignacion", width: 135, dataType: "integer", align: "center", editable: false},
-							{ title: "Fecha de Entrega", width: 125, dataType: "integer", align: "center", editable: true },
-							{ title: "Descripción", width: 350, dataType: "integer", align: "center", editable: true }
-						];
-						obj.dataModel = { data: curso.tareas_array};
-						var $grid = $("#tareasAsignadas").pqGrid(obj);
-						$("#tareasAsignadas").pqGrid({editModel:{clicksToEdit: 1,saveKey:13 }});
-				                    
-						$grid.on( "pqgridcellsave", function(){
-							obj.dataModel = { data: curso.tareas_array};
-							var $grid = $("#tareasAsignadas").pqGrid(obj);
-							$("#tareasAsignadas").pqGrid({editModel:{clicksToEdit: 1,saveKey:13 }});
-						});
-
-						$("#otraTar").on('click',function saludo(){
-							var date = new Date();
-							var listaMes = document.getElementById("mesEntrega");
-							var valorSeleccionadovalue = listaMes.options[listaMes.selectedIndex].value;
-							var listaDia = document.getElementById("diaEntrega");
-							var horaEntrega = document.getElementById("horaEntrega").value;
-							var valorSelectDia = listaDia.options[listaDia.selectedIndex].value;
-							var mesInt = parseInt(valorSeleccionadovalue);
-							var diaInt = parseInt(valorSelectDia);
-							var nombretarea = document.getElementById("recipient-name").value;
-							var fechaasignacion = date.getFullYear() + "-" + (date.getMonth() +1) + "-" + date.getDate();
-							var fechaentrega = date.getFullYear()+"-"+mesInt+"-"+diaInt;
-							var descripcion = document.getElementById("message-text").value;
-
-							if(diaInt != 0 && nombretarea != "" && fechaentrega != "" && descripcion != "" && nombretarea != null && fechaentrega != null && descripcion != null)
-								curso.tareas_array.push([nombretarea,fechaasignacion, fechaentrega,descripcion]);
-							else
-								alert("Ingresar todos los campos requeridos");
-				        				
-							obj.dataModel = { data: curso.tareas_array};
-							var $grid = $("#tareasAsignadas").pqGrid(obj);
-							$("#tareasAsignadas").pqGrid({editModel:{clicksToEdit: 1,saveKey:13 }});      			
-						});
-					},1000);
-				}
-				else{
-					for (var i = 0; i < curso.tareas_array.length; i++) {
-						curso.tareas_array[i].shift();
-					};
-					var obj = { width: 1095, height: 447, title: "Asignación de Tareas",resizable:false,draggable:false };
-					obj.colModel = 
-					[
-						{ title: "Titulo", width: 273, dataType: "string", align: "center", editable: true},
-						{ title: "Fecha de Asignacion", width: 135, dataType: "integer", align: "center", editable: false},
-						{ title: "Fecha de Entrega", width: 125, dataType: "integer", align: "center", editable: true },
-						{ title: "Descripción", width: 350, dataType: "integer", align: "center", editable: true }
-					];
-					obj.dataModel = { data: curso.tareas_array};
-					var $grid = $("#tareasAsignadas").pqGrid(obj);
-					$("#tareasAsignadas").pqGrid({editModel:{clicksToEdit: 1,saveKey:13 }});
-			                    
-					$grid.on( "pqgridcellsave", function(){
-						obj.dataModel = { data: curso.tareas_array};
-						var $grid = $("#tareasAsignadas").pqGrid(obj);
-						$("#tareasAsignadas").pqGrid({editModel:{clicksToEdit: 1,saveKey:13 }});
-					});
-
-					$("#otraTar").on('click',function saludo(){
-						var date = new Date();
-						var listaMes = document.getElementById("mesEntrega");
-						var valorSeleccionadovalue = listaMes.options[listaMes.selectedIndex].value;
-						var listaDia = document.getElementById("diaEntrega");
-						var valorSelectDia = listaDia.options[listaDia.selectedIndex].value;
-						var mesInt = parseInt(valorSeleccionadovalue);
-						var diaInt = parseInt(valorSelectDia);
-						var nombretarea = document.getElementById("recipient-name").value;
-						var fechaasignacion = date.getFullYear() + "-" + (date.getMonth() +1) + "-" + date.getDate();
-						var fechaentrega = date.getFullYear()+"-"+mesInt+"-"+diaInt;
-						var descripcion = document.getElementById("message-text").value;
-
-						if(diaInt != 0 && nombretarea != "" && fechaentrega != "" && descripcion != "" && nombretarea != null && fechaentrega != null && descripcion != null)
-							curso.tareas_array.push([nombretarea,fechaasignacion, fechaentrega,descripcion]);
-						else
-							alert("Ingresar todos los campos requeridos");
-			        				
-						obj.dataModel = { data: curso.tareas_array};
-						var $grid = $("#tareasAsignadas").pqGrid(obj);
-						$("#tareasAsignadas").pqGrid({editModel:{clicksToEdit: 1,saveKey:13 }});      			
-					});
-				}
-			},1000);
-		}
-		else{
+	document.getElementById("loading").innerHTML = "<div style='text-align:center'><img src='img/Loading_icon.gif'></div>";
+}
+function showTareasAsignadas(){
+		document.getElementById("loading").innerHTML = "";
+		console.log(curso.tareas_array[0]);
 			// Le asigno el botton para eliminar la tarea
 			docenteTareasAsignadas = curso.tareas_array;
 			for (var i = 0; i < curso.tareas_array.length; i++) {
 				curso.tareas_array[i].push("<button type='button' class='btn btn-link' id="+i+" onclick = 'deleteTarea(this.id)'>eliminar</button>");
 			};
-			var obj = { width: 1095, height: 447, title: "Asignación de Tareas",resizable:false,draggable:false };
+			obj = { width: 1095, height: 447, title: "Asignación de Tareas",resizable:false,draggable:false };
 			obj.colModel = 
 			[
 				{ title: "codigo", width: 25, dataType: "string", align: "center", editable: false},
 				{ title: "Titulo", width: 273, dataType: "string", align: "center", editable: true},
-				{ title: "Fecha Asignacion", width: 135, dataType: "integer", align: "center", editable: false},
-				{ title: "Fecha Entrega", width: 125, dataType: "integer", align: "center", editable: true },
-				{ title: "Hora entrega", width: 125, dataType: "integer", align: "center", editable: true },
-				{ title: "Descripción", width: 200, dataType: "integer", align: "center", editable: true},
+				{ title: "Fecha Asignacion", width: 115, dataType: "string", align: "center", editable: false},
+				{ title: "Fecha Entrega", width: 110, dataType: "string", align: "center", editable: true },
+				{ title: "Descripcion", width: 200, dataType: "string", align: "center", editable: true },
+				{ title: "Hora entrega", width: 90, dataType: "string", align: "center", editable: true},
+				{ title: "Entrega", width: 50, dataType: "integer", align: "center", editable: true},
+				{ title: "Punteo", width: 50, dataType: "integer", align: "center", editable: true},
 				{ title: "Opciones", width: 125, dataType: "integer", align: "center", editable: false}
 			];
 			obj.dataModel = { data: curso.tareas_array};
@@ -533,80 +486,82 @@ function asignarTareas(){
 				obj.dataModel = { data: curso.tareas_array};
 				var $grid = $("#tareasAsignadas").pqGrid(obj);
 				$("#tareasAsignadas").pqGrid({editModel:{clicksToEdit: 1,saveKey:13 }});
+				//console.log(curso.tareas_array[0]);
 			});
-
-			$("#otraTar").on('click',function saludo(){
-				var date = new Date();
-				var listaMes = document.getElementById("mesEntrega");
-				var valorSeleccionadovalue = listaMes.options[listaMes.selectedIndex].value;
-				var listaDia = document.getElementById("diaEntrega");
-				var valorSelectDia = listaDia.options[listaDia.selectedIndex].value;
-				var mesInt = parseInt(valorSeleccionadovalue);
-				var diaInt = parseInt(valorSelectDia);
-				var nombretarea = document.getElementById("recipient-name").value;
-				var fechaasignacion = date.getFullYear() + "-" + (date.getMonth() +1) + "-" + date.getDate();
-				var fechaentrega = date.getFullYear()+"-"+mesInt+"-"+diaInt;
-				var descripcion = document.getElementById("message-text").value;
-
-				if(diaInt != 0 && nombretarea != "" && fechaentrega != "" && descripcion != "" && nombretarea != null && fechaentrega != null && descripcion != null)
-					curso.tareas_array.push([nombretarea,fechaasignacion, fechaentrega,descripcion]);
-				else
-					alert("Ingresar todos los campos requeridos");
-	        				
-				obj.dataModel = { data: curso.tareas_array};
-				var $grid = $("#tareasAsignadas").pqGrid(obj);
-				$("#tareasAsignadas").pqGrid({editModel:{clicksToEdit: 1,saveKey:13 }});      			
-			});
-		}
-	},1000);	
-					
-
-                    $("#saveTareas").on('click',function saludo()
-                    {
-                    document.getElementById("tareasAsignadas").innerHTML = "<h1>Almacenando tareas asignadas...</h1>";
-                    var keys = ["Titulo","fAsignacion","fEntrega","descripcionTarea"];
-                    obj = null;
-                    output = [];
-
-                    for (i = 0; i < curso.tareas_array.length; i++) {
-                    	obj = {};
-                    	for (k = 0; k < keys.length; k++) {
-                    		obj[keys[k]] = curso.tareas_array[i][k];
-                    	}
-
-                    	output.push(obj);
-                    }
-
-                        var json_stringg = JSON.stringify(output);
-                                              
-                        $.ajax(
-                        {
-                            data: {"tareasAsignadasUpdate":json_stringg},
-                            type: "POST",
-                            url: "controlador.php",
-                            cache: false,
-                            success: function(data) 
-                            {
-                                window.location="docentes.html"
-                            }
-                        })
-                        .done(function( data, textStatus, jqXHR ) 
-                        {
-                           if ( console && console.log ) 
-                            {
-                                console.log( "La solicitud se ha completado correctamenteeee." );
-                            }
-                        })
-                        .fail(function( jqXHR, textStatus, errorThrown ) 
-                        {
-                            alert("La solicitud a fallado, no puede ser");
-                            if ( console && console.log ) 
-                            {
-                                console.log( "La solicitud a falladoooooo: " +  textStatus);
-                            }
-                        });
-        });	
 }
+
+$("#otraTar").on('click',function saludo(){
+	var date = new Date();
+	var listaMes = document.getElementById("mesEntrega");
+	var valorSeleccionadovalue = listaMes.options[listaMes.selectedIndex].value;
+	var listaDia = document.getElementById("diaEntrega");
+	var horaEntrega = document.getElementById("horaEntrega").value;
+	var valorSelectDia = listaDia.options[listaDia.selectedIndex].value;
+	var mesInt = parseInt(valorSeleccionadovalue);
+	var diaInt = parseInt(valorSelectDia);
+	var nombretarea = document.getElementById("recipient-name").value;
+	var fechaasignacion = date.getFullYear() + "-" + (date.getMonth() +1) + "-" + date.getDate();
+	var fechaentrega = date.getFullYear()+"-"+mesInt+"-"+diaInt;
+	var puntuacion = document.getElementById("puntuacion").value;
+	var tipoEntrega = document.getElementById("digital");
+	var tipoEntregaTarea = tipoEntrega.options[tipoEntrega.selectedIndex].value;
+	var descripcion = document.getElementById("message-text").value;
+
+	if(diaInt != 0 && nombretarea != "" && fechaentrega != "" && descripcion != "" && nombretarea != null &&  puntuacion != null && fechaentrega != null && descripcion != null)
+		curso.tareas_array.push(["",nombretarea,fechaasignacion, fechaentrega,horaEntrega,descripcion,tipoEntregaTarea, puntuacion]);
+	else
+		alert("Ingresar todos los campos requeridos");
+				        				
+	obj.dataModel = { data: curso.tareas_array};
+	var $grid = $("#tareasAsignadas").pqGrid(obj);
+	$("#tareasAsignadas").pqGrid({editModel:{clicksToEdit: 1,saveKey:13 }});    		
+});
+
+$("#saveTareas").on('click',function saludo()
+    {
+    document.getElementById("tareasAsignadas").innerHTML = "<h1>Almacenando tareas asignadas...</h1>";
+    var keys = ["x","Titulo","fAsignacion","fEntrega","hEntrega","descripcionTarea","tipoEntrega","valor"];
+    obj = null;
+    output = [];
+
+    for (i = 0; i < curso.tareas_array.length; i++) {
+    	obj = {};
+    	for (k = 0; k < keys.length; k++) {
+    		obj[keys[k]] = curso.tareas_array[i][k];
+    	}
+
+    	output.push(obj);
+    }
+
+        var json_stringg = JSON.stringify(output);
+                                              
+        $.ajax(
+        {
+           data: {"tareasAsignadasUpdate":json_stringg},
+            type: "POST",
+            url: "controlador.php",
+            cache: false,
+            success: function(data) 
+            {
+                window.location="docentes.html";
+            }
+        })
+        .done(function( data, textStatus, jqXHR ) 
+        {
+           if ( console && console.log ) 
+            {
+                console.log( "La solicitud se ha completado correctamenteeee." );
+            }
+        })
+        .fail(function( jqXHR, textStatus, errorThrown ) 
+        {
+            alert("La solicitud a fallado, no puede ser");
+            if ( console && console.log ) 
+            {
+                console.log( "La solicitud a falladoooooo: " +  textStatus);
+            }
+        });
+ });	
 
 /*
 *Aqui obtengo las notas de las tareas 
@@ -1055,7 +1010,6 @@ var tareasEst = {
 			type : "POST",
 			success : function(data){
 				var tareasobject = $.parseJSON(data);
-				console.log(tareasobject);
 				var tareasarray = [];
 				var k = 0;
 				for(var i in tareasobject){
@@ -1220,3 +1174,154 @@ function deleteTarea(posicionEliminar){
 	console.log("Voy a eliminar la tarea "+docenteTareasAsignadas[posicionEliminar]);
 
 }
+
+
+function setNotice(idGrupo){
+	docente = new Docente();
+	cursoSelect = idGrupo;
+	docente.getNotices(allCursos[idGrupo][0]);
+	$('#newNoticieNodal').modal();
+	document.getElementById("grado").innerHTML = allCursos[idGrupo][2];
+	document.getElementById("seccion").innerHTML = allCursos[idGrupo][3];
+	document.getElementById("jornada").innerHTML = allCursos[idGrupo][4]; 
+	document.getElementById("curso").innerHTML = allCursos[idGrupo][5];
+}
+function saveNewNotice(){
+	var curso = allCursos[cursoSelect][0];
+	var noticia = document.getElementById("newNoticeData").value;
+	docente.setNewNotice(curso, noticia);
+}
+
+function showNewNotice(){
+	document.getElementById("noticesAsignated").innerHTML="";
+	$("#noticesAsignated").append("<table class='table table-hover table-striped' id='tableNotices'><thead><tr><th>Noticias</th><th>Borrar</th></tr></thead></table>");
+	for(var i in docente.notices){
+		$("#tableNotices").append("<tr><td>"+docente.notices[i]["descripcionNoticia"]+"</td><td><button type='button' class='btn btn-danger'><span class='glyphicon glyphicon-trash'></span></button></td></tr>")
+	}
+}
+
+function setPluckingWork(idGrupo){
+	window.location = "controlador.php?pluckingWorkGrade="+allCursos[idGrupo][1]+"&pluckingWorkCourse="+allCursos[idGrupo][0];
+}
+
+function getWorksPluckings(){
+	docente.mostrar_nombre();
+	document.getElementById("session").innerHTML = "<button type='button' class='btn btn-link' onclick= 'window.location.href = \"controlador.php?cerrarSession=true\"'>Cerrar sesión</button>";
+	document.getElementById("asignaciones").innerHTML = "<div style='text-align:center'><img src='img/Loading_icon.gif'></div>";
+	curso.getWorksPluckings();
+}
+function showWorksPluckings(){
+	document.getElementById("asignaciones").innerHTML = "";
+	document.getElementById("asignaciones").innerHTML = "<table class='table table-hover' id='WorksPluckings'><thead><tr><th>Tarea</th><th>Fecha Entrega</th><th>Descripcion</th><th>Hora entrega</th><th>Punteo</th></tr></table>";
+	for(var i in curso.tareas_array){
+		$("#WorksPluckings").append("<tr><td>"+curso.tareas_array[i][1]+"</td><td>"+curso.tareas_array[i][3]+"</td><td>"+curso.tareas_array[i][4]+"</td><td>"+curso.tareas_array[i][5]+"</td><td>"+curso.tareas_array[i][7]+"</td></tr>");
+	}
+	var table = document.getElementById("WorksPluckings");
+	var rows = table.getElementsByTagName("tr");
+
+		for (var i = 0; i < rows.length; i++) {
+			var idTarea = curso.tareas_array[i][0];
+			var currentRow = table.rows[i+1];
+			var createClickHandler = 
+				function (idTarea) {
+					return function(){
+						window.location = "controlador.php?pluckingWorkIdWork="+idTarea;
+					}
+				};
+			currentRow.onclick = createClickHandler(idTarea);	
+		};
+}
+
+function getWorksPluckingsStudents(){
+	docente.mostrar_nombre();
+	document.getElementById("session").innerHTML = "<button type='button' class='btn btn-link' onclick= 'window.location.href = \"controlador.php?cerrarSession=true\"'>Cerrar sesión</button>";
+	document.getElementById("asignaciones").innerHTML = "<div style='text-align:center'><img src='img/Loading_icon.gif'></div>";
+	curso.getWorksPluckingsStudents();	
+}
+
+function showWorksPluckingsStudents(){
+	document.getElementById("asignaciones").innerHTML = "";
+	document.getElementById("asignaciones").innerHTML = "<table class='table table-hover' id='WorksPluckings'><thead><tr><th>Clave</th><th>Estudiante</th></tr></table>";
+	for(var i in curso.students){
+		$("#WorksPluckings").append("<tr><td>"+(parseInt(i)+1)+"</td><td>"+curso.students[i]["nombresEstudiante"]+"</td></tr>");
+	}
+	var table = document.getElementById("WorksPluckings");
+	var rows = table.getElementsByTagName("tr");
+
+		for (var i = 0; i < rows.length; i++) {
+			var idStudent = curso.students[i]["idEstudiante"];
+			var currentRow = table.rows[i+1];
+			var createClickHandler = 
+				function (idStudent) {
+					return function(){
+						document.getElementById("statusPluckingWorkStudents").innerHTML = "<div style='text-align:center'><img src='img/Loading_icon.gif'></div>";
+						$("#setPluckingWorkStudents").modal();
+						curso.pluckingWorkStudents(idStudent);
+						//alert("Docente evalua tarea ");
+					}
+				};
+			currentRow.onclick = createClickHandler(idStudent);	
+		};
+}
+
+function showPluckingWorkStudent(){
+	document.getElementById("statusPluckingWorkStudents").innerHTML = "";	
+	document.getElementById("tituloTarea").innerHTML = curso.pluckingWorkStudent["nombreTarea"];
+	document.getElementById("puntuacionTarea").innerHTML = curso.pluckingWorkStudent["valor"];
+	if (curso.pluckingWorkStudent["fileTarea"] != null){
+		tarea.allPath = curso.pluckingWorkStudent["fileTarea"];
+		document.getElementById("tareaEntregada").innerHTML = "<button type='button' class='btn btn-link' onclick= 'downlandFile()'>"+curso.pluckingWorkStudent["fileTarea"]+"</button>";		
+	}
+	else
+		document.getElementById("tareaEntregada").innerHTML = "<p class='lead'>Tarea no entregada</p>";
+	document.getElementById("puntuacionObtenida").value = curso.pluckingWorkStudent["Punteo_Tarea"];
+	document.getElementById("observacionTarea").value = curso.pluckingWorkStudent["ObservacionTarea"];
+}
+
+function savePluckingWorkStudent(){
+	var notaObtenida = document.getElementById("puntuacionObtenida").value;
+	var observacionTarea = document.getElementById("observacionTarea").value;
+	curso.savePluckingWorkStudent(notaObtenida, observacionTarea);
+}
+
+function downlandFile(){
+	document.location = tarea.allPath;
+}
+
+
+function newNoticeGrade(){
+	document.getElementById("menuPrincipal").innerHTML = "<button type='button' class='btn btn-link' onclick= 'window.location.href = \"sysAdmin.html\"'>Menú Principal</button>";
+	document.getElementById("session").innerHTML = "<button type='button' class='btn btn-link' onclick= 'window.location.href = \"controlador.php?cerrarSession=true\"'>Cerrar sesión</button>";	
+}
+function addFileNotice(nameFile){
+	colegioGradosAct.addFileNotice(nameFile);
+}
+
+function postNotice(){
+	var notice = document.getElementById("inputNotice").value;
+	if (notice == '')
+		alert("Agregar contenido a noticia");
+	else
+		colegioGradosAct.postNotice(notice);
+}
+
+/*
+*	Section controller resourses
+*/
+function getResources(){
+	document.getElementById("menuPrincipal").innerHTML = "<button type='button' class='btn btn-link' onclick= 'window.location.href = \"docentes.html\"'>Menú Principal</button>";
+	document.getElementById("session").innerHTML = "<button type='button' class='btn btn-link' onclick= 'window.location.href = \"controlador.php?cerrarSession=true\"'>Cerrar sesión</button>";	
+	curso.getResources();	
+}
+function addResource(nameResource){
+	var descripcionResource = document.getElementById("descripcionResource").value;
+	curso.addResource(descripcionResource, nameResource);
+}
+function showRerourcesCourse(){
+	document.getElementById("sourcesShareds").innerHTML = "";
+	document.getElementById("sourcesShareds").innerHTML = "<table class='table table-hover' id='resourcesShareds'><thead><tr><th>Descripción</th><th>Recurso</th></tr></thead></table>";
+	for(var i in curso.resources){
+		$("#resourcesShareds").append("<tr><td>"+curso.resources[i]["descripcionRecurso"]+"</td><td><button type='button' class='btn btn-link' onclick='window.location = \"server/php/files/"+curso.resources[i]["archivoRecurso"]+"\"'>"+curso.resources[i]["archivoRecurso"]+"</button></td></tr>");
+	}
+}
+

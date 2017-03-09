@@ -52,7 +52,8 @@ class log_in extends conexion
 		$this->closeconnect();
 		if(mysql_num_rows($this->datosusuario) > 0){
 			$docente = mysql_fetch_array($this->datosusuario,MYSQL_ASSOC);
-                	$_SESSION["id_docente"] = $docente["idDocente"];
+			$_SESSION["id_docente"] = $docente["idDocente"];
+			$_SESSION["Docente"] = new docente($_SESSION["id_docente"]);
 			return true;
 		}
 		else
@@ -69,8 +70,11 @@ class log_in extends conexion
 		$estenc = mysql_num_rows($this->datosusuarioo);
 		if($estenc > 0){
 			$estudiante = mysql_fetch_array($this->datosusuarioo,MYSQL_ASSOC);
-                	$_SESSION["grado_estudiante"] = $estudiante["Grados_idGrado"];
-                	$_SESSION["id_estudiante"] = $estudiante["idEstudiante"];
+            $_SESSION["Estudiante"] = new Estudiantes();
+            $_SESSION["Estudiante"]->setIdEstudiante($estudiante["idEstudiante"]);
+            $_SESSION["grado_estudiante"] = $estudiante["Grados_idGrado"];
+            $_SESSION["Estudiante"]->gradoEstudiante = $estudiante["Grados_idGrado"];
+            $_SESSION["id_estudiante"] = $estudiante["idEstudiante"];
 			return true;
 		}
 		else
@@ -78,7 +82,7 @@ class log_in extends conexion
 	}	
 
 	function is_Admin(){
-		$query = "SELECT nombreAdmin, passwordAdmin from sisAdmin where passwordAdmin = '$this->passwordd' and nombreAdmin = '$this->usuario'";
+		$query = "SELECT idSysAdmin, nombreAdmin, passwordAdmin from sisAdmin where passwordAdmin = '$this->passwordd' and nombreAdmin = '$this->usuario'";
 		if (!parent:: __construct())
 			die ("Error en la conexion para buscar a un estudiante"+mysql_error());
 		mysql_query("SET NAMES 'utf8'");
@@ -89,6 +93,8 @@ class log_in extends conexion
 		if($estenc > 0){
 			$sysAdmin = mysql_fetch_array($this->datosAdmin,MYSQL_ASSOC);
             $_SESSION["nombreAdmin"] = $sysAdmin["nombreAdmin"];
+            $_SESSION["idSysAdmin"] = $sysAdmin["idSysAdmin"];
+            $_SESSION["passwordAdmin"] = $sysAdmin["passwordAdmin"];
 			return true;
 		}
 		else
@@ -122,7 +128,6 @@ class Colegio extends conexion
 		$query = "SELECT * from Grados where Anio_idanio = 2";
 		if (!parent:: __construct())
 			die ("Error en la conexion para buscar a un estudiante"+mysql_error());
-		mysql_query("SET NAMES 'utf8'");
 		if(!$this->grados = mysql_query($query))
 			die("Error en la consulta para evaluar a un estudiante"+mysql_error());
 		$this->closeconnect();
@@ -133,7 +138,19 @@ class Colegio extends conexion
 		else
 			return false;
 	}
-
+	public function postNotice($idGrados,$textContent, $filesContent, $unidad){
+		for ($i = 0; $i < count($idGrados); $i++) { 
+			$query = "INSERT into NoticiasGrados(contenidoNoticiaGrado, archivoNoticiaGrado, idGrado, unidad) values('$textContent', '$filesContent', $idGrados[$i], $unidad)";
+			if (!parent:: __construct())
+				die ("Error en la conexion para Almacenar los Grados".mysql_error());
+			mysql_query("SET NAMES 'utf8'");
+			if (!mysql_query($query)) {
+				die("Error al almacenar grados: ".mysql_error());
+			}
+			$this->closeconnect();
+		}
+		return true;
+	}
 }
 
 class PDF extends FPDF
@@ -239,6 +256,7 @@ class docente extends conexion
 		if(!parent::__construct()){
 			die("Error en la conexion nombre docente: ".mysql_error());
 		}
+		mysql_query("SET NAMES 'utf8'");
 		if(!$nombre = mysql_query($query)){
 			die("Error al encontrar el nombre: ".mysql_error());
 		}
@@ -246,7 +264,28 @@ class docente extends conexion
 		$nombredocente = mysql_fetch_array($nombre,MYSQL_ASSOC);
 		return $nombredocente["nombresDocente"];
 	}
+	public function setNotice($idAsignacion, $notice, $unidad){
+		$query = "INSERT into Noticias(descripcionNoticia, idAsignacion, unidad) values('$notice',$idAsignacion,$unidad)";
+		parent::__construct();
+		mysql_query($query);
+		$query = "SELECT * from Noticias where idNoticia = last_insert_id()";
+		$newNotice = mysql_query($query);
+		$this->closeconnect();
+		$newNotice = mysql_fetch_array($newNotice,MYSQL_ASSOC);
+		return json_encode($newNotice);
+	}
+	public function getNotices($idCurso, $unidad){
+		$query = "SELECT * from Noticias where idAsignacion = $idCurso";
+		parent::__construct();
+		$newNotice = mysql_query($query);
 
+		$this->closeconnect();
+		$notices = array();
+		while ($newNoticeA = mysql_fetch_array($newNotice,MYSQL_ASSOC)) {
+			array_push($notices, $newNoticeA);
+		}
+		return json_encode($notices);
+	}
 }
 
 
@@ -255,6 +294,7 @@ class docente extends conexion
 */
 class tareas extends conexion
 {
+	public $idTarea;
 	public $periodo_docentes;
 	public $grado;
 	public $periodo;
@@ -262,11 +302,40 @@ class tareas extends conexion
 	public $estudiantes;
 	public $notastareas;
 	public $notatarea;
+	public $detailWork = array();
 	function __construct()
 	{
 		
 	}
 
+	public function setDigitalWork($idStudent, $pathWorck){
+		$query = "UPDATE Nota_tareas set fileTarea = '$pathWorck' where Tareas_idTarea = $this->idTarea and Estudiantes_idEstudiante = $idStudent";
+		if (!parent:: __construct()) 
+			die("Error en la conexion para localizar las tareas "+mysql_error());
+		else{
+			mysql_query("SET NAMES 'utf8'");
+			if (mysql_query($query))
+				return true;
+			else
+				return false;
+		}
+	}
+
+	public function getDetailsDigitalWork($idTarea, $idEstudiante){
+		$query = "SELECT T.nombreTarea, T.fechaasignacionTarea, T.fechaentregaTarea, T.descripcionTarea, T.horaEntrega, T.valor, NT.Punteo_Tarea, NT.ObservacionTarea, NT.fileTarea from Tareas T inner join Nota_tareas NT on T.idTarea = NT.Tareas_idTarea and NT.Tareas_idTarea = $idTarea and Estudiantes_idEstudiante = $idEstudiante";
+		if (!parent:: __construct()) 
+			die("Error en la conexion para localizar las tareas "+mysql_error());
+		if(!$detailWork = mysql_query($query))
+			die("Error en la consutla de las notas "+mysql_error());
+		else{
+			if ($detailWork = mysql_fetch_array($detailWork,MYSQL_ASSOC)){
+				array_push($this->detailWork, $detailWork);
+			}
+			else
+				$this->detailWork = false;
+		}
+		$this->closeconnect();	
+	}
 	function notas($idcurso,$idestudiante,$unidad){
 		$query = "SELECT T.idTarea, T.nombreTarea, T.fechaentregaTarea, NT.Punteo_Tarea, NT.ObservacionTarea from Tareas T inner join Nota_tareas NT on T.Unidad = $unidad and T.Periodos_docentes_id_periodos_docentes = $idcurso and T.idTarea = NT.Tareas_idTarea and NT.Estudiantes_idEstudiante = $idestudiante";
 		if (!parent:: __construct()) 
@@ -303,7 +372,35 @@ class tareas extends conexion
 		else
 			return false;
 	}
-
+	// Funcion que obtiene la nota de una tarea para que el docente la administre
+	function getPluckingWorkStudent($idTarea,$idEstudiante){
+		$query = "SELECT T.nombreTarea, T.valor, NT.Punteo_Tarea, NT.ObservacionTarea, NT.fileTarea from Tareas T inner join Nota_tareas NT on T.idTarea = NT.Tareas_idTarea and NT.Tareas_idTarea = $idTarea and NT.Estudiantes_idEstudiante = $idEstudiante";
+		if (!parent:: __construct()) 
+			die("Error en la conexion para localizar las tareas "+mysql_error());
+		if(!$notatarea = mysql_query($query))
+			die("Error en la consutla de las notas "+mysql_error());
+		else{
+			$notatarea = mysql_fetch_assoc($notatarea);
+			return $notatarea;
+		}
+		$this->closeconnect();
+	}
+	// Metodo que asigna una nota y observacion que un docente tiene para la tarea
+	function setPluckingWorkStudent($idTarea,$idEstudiante, $nota, $observacion){
+		$query = "UPDATE Nota_tareas SET Punteo_Tarea = $nota, ObservacionTarea = '$observacion' where Tareas_idTarea = $idTarea and Estudiantes_idEstudiante = $idEstudiante";
+		if (!parent:: __construct()) 
+			die("Error en la conexion para localizar las tareas "+mysql_error());
+		if(!$notatarea = mysql_query($query)){
+			die("Error en la consutla de las notas "+mysql_error());
+			$this->closeconnect();
+			return false;
+		}
+		else{
+			$this->closeconnect();
+			return true;
+		}
+		
+	}
 	function grado($grado,$unidad){
 		$this->grado = $grado;
 		$query = "SELECT T.idTarea, T.fechaasignacionTarea, T.fechaentregaTarea, T.nombreTarea, M.nombreMateria, T.descripcionTarea from Tareas T inner join Periodos_docentes PD on T.Unidad = $unidad and T.Periodos_docentes_id_periodos_docentes = PD.id_periodos_docentes and Grados_idGrado = '$this->grado' inner join Materias M on PD.Materias_idMateria = M.idMateria";
@@ -449,6 +546,32 @@ class Cursos extends conexion
 	{
 		# code...
 	}
+	public function getResources(){
+		$query = "SELECT * from Recursos where PDidAsigmacion = $this->idCurso and unidad = $this->unidad";
+		parent:: __construct();
+		mysql_query("SET NAMES 'utf8'");
+		$resources = mysql_query($query);
+		$this->closeconnect();
+		$resourcesA = array();
+		while($resource = mysql_fetch_array($resources, MYSQL_ASSOC)){
+			array_push($resourcesA, $resource);
+		}
+		return $resourcesA;
+	}
+	public function setResources($descNewRsource,$nameNewRsource, $unidad){
+		$query = "INSERT into Recursos (descripcionRecurso, archivoRecurso, PDidAsigmacion, unidad) values ('$descNewRsource','$nameNewRsource',$this->idCurso, $unidad)";
+		parent:: __construct();
+		mysql_query("SET NAMES 'utf8'");
+		mysql_query($query);
+		$query = "SELECT * from Recursos where PDidAsigmacion = $this->idCurso and unidad = $unidad";
+		$resources = mysql_query($query);
+		$this->closeconnect();
+		$resourcesA = array();
+		while($resource = mysql_fetch_array($resources, MYSQL_ASSOC)){
+			array_push($resourcesA, $resource);
+		}
+		return $resourcesA;
+	}
 
 	function connect(){
 		if(!parent:: __construct())
@@ -493,8 +616,12 @@ class Cursos extends conexion
 		return true;
 	}
 
-	function asignarTarea($nombre,$fecha_asignacion,$fecha_entrega,$descripcion){
-		$query = "INSERT into Tareas (nombreTarea,fechaasignacionTarea,fechaentregaTarea,descripcionTarea,Periodos_docentes_id_periodos_docentes, Unidad) values('$nombre','$fecha_asignacion','$fecha_entrega','$descripcion',$this->idCurso,$this->unidad)";
+	function asignarTarea($nombre,$fecha_asignacion,$fecha_entrega,$descripcion, $hora, $tipo, $valor, $idGrado){
+		$valorTarea = (int)$valor;
+		if ($tipo == "0")
+			$query = "INSERT into Tareas (nombreTarea,fechaasignacionTarea,fechaentregaTarea,descripcionTarea,Periodos_docentes_id_periodos_docentes, Unidad, horaEntrega, digital, valor) values('$nombre','$fecha_asignacion','$fecha_entrega','$descripcion',$this->idCurso,$this->unidad, '$hora', false, $valorTarea)";
+		else if($tipo == "1")
+			$query = "INSERT into Tareas (nombreTarea,fechaasignacionTarea,fechaentregaTarea,descripcionTarea,Periodos_docentes_id_periodos_docentes, Unidad, horaEntrega, digital, valor) values('$nombre','$fecha_asignacion','$fecha_entrega','$descripcion',$this->idCurso,$this->unidad, '$hora', true, $valorTarea)";
 		if (!parent:: __construct())
 			die("Error en la conexion para asignar tarea: "+mysql_error());
 		mysql_query("SET NAMES 'utf8'");
@@ -502,12 +629,29 @@ class Cursos extends conexion
 			$this->closeconnect();
 			return false;
 		}
+		$query = "SELECT idTarea from Tareas where idTarea = last_insert_id()";
+		$idNewTarea = mysql_query($query);
+		$idNewTarea = mysql_fetch_array($idNewTarea, MYSQL_ASSOC);
+		$idNewTarea = $idNewTarea["idTarea"];
+		$query = "SELECT idEstudiante from Estudiantes where Grados_idGrado = $idGrado";
+		$estudiantes = mysql_query($query);
+		while ($estudiante = mysql_fetch_array($estudiantes, MYSQL_ASSOC)) {
+			$idEstudiante = $estudiante["idEstudiante"]; 
+			$query = "INSERT into Nota_tareas(Tareas_idTarea, Estudiantes_idEstudiante) values($idNewTarea, $idEstudiante)";
+			mysql_query($query);
+		}
 		$this->closeconnect();
 		return true;
 	}
 
-	function actualizarTarea($nombre,$fecha_asignacion,$fecha_entrega,$descripcion,$idTarea){
-		$query = "UPDATE Tareas SET nombreTarea = '$nombre', fechaasignacionTarea = '$fecha_asignacion', fechaentregaTarea = '$fecha_entrega', descripcionTarea = '$descripcion' where idTarea = $idTarea";
+	function actualizarTarea($nombre,$fecha_asignacion,$fecha_entrega,$descripcion,$idTarea, $horaEntrega, $tipoEntrega, $valor){
+		$valorTarea = (int)$valor;
+		if ($tipoEntrega == '0')
+			$query = "UPDATE Tareas SET nombreTarea = '$nombre', fechaasignacionTarea = '$fecha_asignacion', fechaentregaTarea = '$fecha_entrega', descripcionTarea = '$descripcion', valor = $valorTarea, horaEntrega = '$horaEntrega', digital = false where idTarea = $idTarea";
+		else if($tipoEntrega == '1')
+			$query = "UPDATE Tareas SET nombreTarea = '$nombre', fechaasignacionTarea = '$fecha_asignacion', fechaentregaTarea = '$fecha_entrega', descripcionTarea = '$descripcion', valor = $valorTarea, horaEntrega = '$horaEntrega', digital = true where idTarea = $idTarea";
+		else
+			$query = "SET NAMES 'utf8'";	
 		if (!parent:: __construct())
 			die("Error en la conexion para asignar tarea: "+mysql_error());
 		mysql_query("SET NAMES 'utf8'");
@@ -544,7 +688,7 @@ class Cursos extends conexion
 			return false;
 	}
 	function consultarTareas(){
-		$query = "SELECT T.idTarea, T.nombreTarea, T.fechaasignacionTarea, T.fechaentregaTarea, T.horaEntrega, T.descripcionTarea from Tareas T inner join Periodos_docentes PD on T.Periodos_docentes_id_periodos_docentes = PD.id_periodos_docentes and id_periodos_docentes = $this->idCurso and T.Unidad = $this->unidad";
+		$query = "SELECT T.idTarea, T.nombreTarea, T.fechaasignacionTarea, T.fechaentregaTarea, T.descripcionTarea, T.horaEntrega, T.digital, T.valor from Tareas T inner join Periodos_docentes PD on T.Periodos_docentes_id_periodos_docentes = PD.id_periodos_docentes and id_periodos_docentes = $this->idCurso and T.Unidad = $this->unidad";
 		if(!parent:: __construct())
 			die("Error al buscar a las tareas"+mysql_error());
 		if(!$this->tareas = mysql_query($query))
@@ -557,6 +701,19 @@ class Cursos extends conexion
 		else
 			return false;
 	}
+	/*function getWorks(){
+		$query = "SELECT T.idTarea, T.nombreTarea, T.fechaasignacionTarea, T.fechaentregaTarea, T.horaEntrega, T.descripcionTarea, NT.Punteo_Tarea, NT.ObservacionTarea, NT.fileTarea from Tareas T inner join Nota_tareas NT on T.idTarea = NT.Tareas_idTarea inner join Periodos_docentes PD on T.Periodos_docentes_id_periodos_docentes = PD.id_periodos_docentes and id_periodos_docentes = $this->idCurso and T.Unidad = $this->unidad";
+		if(!parent:: __construct())
+			die("Error al buscar a las tareas"+mysql_error());
+		if(!$this->tareas = mysql_query($query))
+			die("Error al buscar las tareas"+mysql_error());
+		$this->closeconnect();
+		$tareasA = array();
+		while ($tareaCurso = mysql_fetch_array($this->tareas,MYSQL_ASSOC)) {
+			array_push($tareasA, $tareaCurso);
+		}
+		return json_encode($tareasA);
+	}*/
 	function consultarParcial($noParciall,$idEstudiantee){
 		$noParcial = (int)$noParciall;
 		$idEstudiante = (int)$idEstudiantee;
@@ -602,13 +759,27 @@ class Estudiantes extends conexion
 	public $estudiantes;
 	public $estudiantefinales;
 	public $idEstudiante;
+	public $gradoEstudiante;
 	function __construct()
 	{
 		if (!parent:: __construct()) {
                         die("Error en la conexion para almacenar a un estudiante "+mysql_error());
                 }
 	}
-
+	public function getNoticesGrade($unidad){
+		parent:: __construct();
+		$query = "SELECT * from NoticiasGrados where idGrado = $this->gradoEstudiante and unidad = $unidad";
+		if($noticesGrade = mysql_query($query)){
+			$this->closeconnect();
+			$noticesGradeA = array();
+			while ($noticeGrade = mysql_fetch_array($noticesGrade,MYSQL_ASSOC)) {
+				array_unshift($noticesGradeA, $noticeGrade);
+			}
+			return $noticesGradeA;
+		}
+		else
+			echo "Error en todo";
+	}
 	function setIdEstudiante($idEstudiante){
 		$this->idEstudiante = $idEstudiante;
 	}
@@ -618,6 +789,7 @@ class Estudiantes extends conexion
 		if(!parent::__construct()){
 			die("Error en la conexion nombre docente: ".mysql_error());
 		}
+		mysql_query("SET NAMES 'utf8'");
 		if(!$nombre = mysql_query($query)){
 			die("Error al encontrar el nombre: ".mysql_error());
 		}
@@ -665,8 +837,31 @@ class Estudiantes extends conexion
 	function cerrar (){
 		$this->closeconnect();
 	}
-	
-	
+
+	public function getNotices($idCurso, $unidad){
+		$query = "SELECT * from Noticias where idAsignacion = $idCurso and unidad = $unidad";
+		parent::__construct();
+		$newNotice = mysql_query("SET NAMES 'utf8'");
+		$newNotice = mysql_query($query);
+		$this->closeconnect();
+		$notices = array();
+		while ($newNoticeA = mysql_fetch_array($newNotice,MYSQL_ASSOC)) {
+			array_push($notices, $newNoticeA);
+		}
+		return json_encode($notices);
+	}
+	public function getResources($idCurso, $unidad){
+		$query = "SELECT * from Recursos where PDidAsigmacion = $idCurso and unidad = $unidad";
+		parent::__construct();
+		$newNotice = mysql_query("SET NAMES 'utf8'");
+		$newNotice = mysql_query($query);
+		$this->closeconnect();
+		$notices = array();
+		while ($newNoticeA = mysql_fetch_array($newNotice,MYSQL_ASSOC)) {
+			array_push($notices, $newNoticeA);
+		}
+		return json_encode($notices);
+	}
 }
 
 /**
@@ -688,8 +883,6 @@ class Grado extends conexion
 	}
 	function setIdGrado($idGrado){
 		$this->idGrado = $idGrado;
-	}
-	function obtenerCursos(){
 	}
 	function obtenerEstudiantes(){
 		$query = "SELECT E.idEstudiante, E.nombresEstudiante from Estudiantes E inner join Grados G on E.Grados_idGrado = G.idGrado and G.idGrado = $this->idGrado";

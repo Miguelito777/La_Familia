@@ -3,7 +3,48 @@
 */
 
 function Colegio(){
+	this.noticeGrades = [];
+	this.filesNotice;
+}
+Colegio.prototype.addGrade = function(idGrade){
+	this.noticeGrades.push(idGrade);
+}
+Colegio.prototype.newNotice = function(){
+	var idsGrades = JSON.stringify(this.noticeGrades);
+	$.ajax({
+		url : "controlador.php",
+		type : "POST",
+		data : {"newNoticeGrades": idsGrades},
+		success : function(data){
+			if (parseInt(data) == 1)
+				window.location = "newNoticeGrade.html";
+			else
+				window.location = "registros.html"
+		}
+	})
+}
+Colegio.prototype.addFileNotice = function(nameFile){
+	this.filesNotice = nameFile;
+}
+Colegio.prototype.postNotice = function(notice){
+	var noticeO = {};
+	noticeO.textContent = notice;
+	noticeO.fileContent = this.filesNotice;
+	noticeO = JSON.stringify(noticeO);
+	$.ajax({
+		url : "controlador.php",
+		type : "POST",
+		data : {"postNotice" : noticeO},
+		success : function(data){
+			if(parseInt(data) == 1){
+				alert("Noticia publicada exitosamente");
+				window.location = "sysAdmin.html";
+			}
+			else
+				alert("Error al aignar la notici");
 
+		}
+	})
 }
 Colegio.prototype.convertirObject = function(object){
 	var cursos_array = [];
@@ -27,7 +68,7 @@ Colegio.prototype.obtenerGrados = function(){
 			Cache: false,
 			success: function (data){
 				var grados_objctJavascript = $.parseJSON(data);
-				_this.grados_arrayJavascript = _this.convertirObject(grados_objctJavascript);
+				showGrades(grados_objctJavascript);
 			}
 		}).done(function( data, textStatus, jqXHR ) {
 			if ( console && console.log ) {
@@ -58,7 +99,10 @@ Administrador.prototype.mostrarNombre = function(){
 			type: "POST",
 			Cache: false,
 			success: function (data){
-				document.getElementById("nombre").innerHTML = "<strong>"+data+"</strong>";
+				if (data == "")
+					window.location = "registros.html";
+				else
+					document.getElementById("nombre").innerHTML = "<strong>"+data+"</strong>";
 			}
 		}).done(function( data, textStatus, jqXHR ) {
 			if ( console && console.log ) {
@@ -77,9 +121,64 @@ Administrador.prototype.mostrarNombre = function(){
 * de los estudiantes
 */
 function Cursos (){
-
+	this.tareas_array = [];
+	this.students = [];
+	this.pluckingWorkStudent;
+	this.resources;
 }
-
+Cursos.prototype.savePluckingWorkStudent = function(nota, observacion){
+	var asignation = {};
+	asignation.nota = nota;
+	asignation.observacion = observacion;
+	asignation = JSON.stringify(asignation);
+        var _this = this;
+        $.ajax({
+                url : "controlador.php",
+                data : {"savePluckingWorkStudent" : asignation},
+                type : "POST",
+                success : function (data){
+                	if (data == "0")
+                		alert("Error al calificar la tarea");
+                }
+        })	
+}
+Cursos.prototype.pluckingWorkStudents = function(idStudent){
+        var _this = this;
+        $.ajax({
+                url : "controlador.php",
+                data : {"pluckingWorkIdStudent" : idStudent},
+                type : "GET",
+                success : function (data){
+                        _this.pluckingWorkStudent = $.parseJSON(data);
+                		showPluckingWorkStudent();
+                }
+        })	
+}
+Cursos.prototype.getWorksPluckingsStudents = function(){
+        var _this = this;
+        $.ajax({
+                url : "controlador.php",
+                data : {"getWorksPluckingsStudents" : true},
+                type : "GET",
+                success : function (data){
+                        _this.students = $.parseJSON(data);
+                		showWorksPluckingsStudents();
+                }
+        })		
+}
+Cursos.prototype.getWorksPluckings = function(){
+        var _this = this;
+        $.ajax({
+                url : "controlador.php",
+                data : {"getWorksPluckings" : true},
+                type : "GET",
+                success : function (data){
+                        var cursos_object = $.parseJSON(data);
+                        _this.tareas_array = _this.convertirObject(cursos_object);
+                		showWorksPluckings();
+                }
+        })	
+}
 Cursos.prototype.convertirObject = function(object){
 	var cursos_array = [];
 	for(var i in object){
@@ -111,11 +210,12 @@ Cursos.prototype.solicitarTareas = function (){
         var _this = this;
         $.ajax({
                 url : "controlador.php",
-                data : {tareasAsignadas : true},
+                data : {"tareasAsignadas" : true},
                 type : "POST",
                 success : function (data){
                         var cursos_object = $.parseJSON(data);
                         _this.tareas_array = _this.convertirObject(cursos_object);
+                		showTareasAsignadas()
                 }
         })
 }
@@ -157,7 +257,35 @@ Cursos.prototype.solicitarNotasBimestrales = function (){
                 }
         })
 }
+Cursos.prototype.addResource = function(descripcion,name){
+    var _this = this;
+	var resource = {};
+	resource.descriptionResource = descripcion;
+	resource.fileResource = name;
+	resource = JSON.stringify(resource);
+	$.ajax({
+		url : "controlador.php",
+		type : "GET",
+		data : {"addResource" : resource},
+		success : function(data){
+			_this.resources = $.parseJSON(data);
+			showRerourcesCourse();
 
+		}
+	});	
+}
+Cursos.prototype.getResources = function(){
+        var _this = this;
+        $.ajax({
+                url : "controlador.php",
+                data : {"getResources": true},
+                type : "GET",
+                success : function (data){
+					_this.resources = $.parseJSON(data);
+					showRerourcesCourse();
+                }
+        })	
+}
 
 /**
 * Clase que administra las notas
@@ -292,3 +420,44 @@ Estudiantesss.prototype.notasFinales = function (){
 		});
 }
 
+
+/**
+* Clase Docente
+*/
+
+function Docente(){
+	this.notices = [];
+}
+Docente.prototype.getNotices = function(idCurso){
+	var _this = this;
+	$.ajax({
+		url : "controlador.php",
+		type : "GET",
+		data : {"getNotices" : idCurso},
+		success : function(data){
+			_this.notices = [];
+			var newNoticeS = $.parseJSON(data);
+			for(var i in newNoticeS){
+				_this.notices.unshift(newNoticeS[i]);				
+			}
+			showNewNotice();
+		}
+	})
+}
+Docente.prototype.setNewNotice = function(idCurso, notice){
+	var _this = this;
+	var newNotice = {};
+	newNotice.idCurso = idCurso;
+	newNotice.notice = notice;
+	var newNoticeJson = JSON.stringify(newNotice);
+	$.ajax({
+		url : "controlador.php",
+		type : "POST",
+		data : {"newNotice" : newNoticeJson},
+		success : function(data){
+			var newNoticeS = $.parseJSON(data);
+			_this.notices.unshift(newNoticeS);
+			showNewNotice();
+		}
+	})
+}

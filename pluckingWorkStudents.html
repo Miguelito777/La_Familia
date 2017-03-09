@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+	<meta charset="UTF-8">
+	<title>Perfil Docentes</title>
+	<link rel="stylesheet" href="css/bootstrap.css">
+	
+</head>
+
+<body>
+
+		<div class="container">
+			<div class="row bg-success">
+				<div class="col-xs-4">
+					<table class="table table-condensed ">
+						<thead>
+						</thead>
+						<tbody>
+							<tr>
+								<th> Docente:</th>
+								<td id = "nombre"></td>	
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="col-xs-4"></div> 
+				<div class="col-xs-4" id="session">
+					
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-4">
+					<img src="images/headindex.png" class="img-responsive" alt="Responsive image">	
+				</div>
+				<div class="col-xs-8">
+						<h1>BIENVENIDOS</h1><br>
+					<p class="lead">Fecha: <div id="dia"></div><div id="mes"></div><div id="anio"></div></p>
+					<script>
+						var date = new Date();
+						var anio = date.getFullYear();
+						var mes = (date.getMonth() +1);
+						var dia = date.getDate();
+						document.getElementById('dia').innerHTML = dia;
+						document.getElementById('anio').innerHTML = "del "+anio;
+						switch(mes) {
+   							case 1:
+                                                        document.getElementById('mes').innerHTML = 'enero';
+                                                        break;
+							case 2:
+                                                        document.getElementById('mes').innerHTML = 'febrero';
+                                                        break;
+							case 3:
+                                                        document.getElementById('mes').innerHTML = 'marzo';
+                                                        break;
+							case 4:
+                                                        document.getElementById('mes').innerHTML = 'abril';
+                                                        break;
+							case 5:
+                                                        document.write('mayo');
+                                                        break;
+							case 6:
+        						document.getElementById('mes').innerHTML = 'Junio';
+        						break;
+    							case 7:
+                                                        document.getElementById('mes').innerHTML = 'julio';
+                                                        break;
+        						case 8:
+                                                        document.getElementById('mes').innerHTML = 'agosto';
+                                                        break;
+        						case 9:
+                                                        document.getElementById('mes').innerHTML = 'septiembre';
+                                                        break;
+							case 10:
+                                                        document.getElementById('mes').innerHTML = 'octubre';
+                                                        break;
+						}
+						
+					</script>
+				</div>
+			</div>
+			<div class="row">
+				<div class="container">
+					<div class="col-xs-12" id="asignaciones"></div>
+				</div>
+			</div>
+			<br>
+			<br>
+			<div class="row">
+				<div class="col-xs-4"></div>
+				<div class="col-xs-4">Derechos reservados</div>
+				<div class="col-xs-4"></div>
+			</div>
+		</div>
+	<script type='text/javascript' src="js/jquery-2.1.1.js"></script>
+	<script type='text/javascript' src="js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="js/modelo.js"></script>
+	<script type="text/javascript" src="js/controlador.js"></script>
+	<script> getWorksPluckingsStudents();</script>
+
+	<div class="modal fade" id="setPluckingWorkStudents">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title">Calificacion</h4>
+				</div>
+				<div class="modal-body">
+					<div class="row" id="statusPluckingWorkStudents"></div>
+					<div class="row">
+	                    <div class="col-xs-12 bg-success" >
+	                        <label for="tituloTarea">Tarea</label>
+	                        <div id="tituloTarea"></div>
+	                        <label for="puntuacionTarea">Puntuacion Máxima</label>
+	                        <div id="puntuacionTarea"></div>
+	                        <label for="tareaEntregada">Entrega</label>
+	                        <div id="tareaEntregada"></div>
+	                        <label for="puntuacionObtenida">Puntuacion Obtenida</label>
+	                        <input class="form-control {2:form-control-{1:sm|lg}}" type="text" id="puntuacionObtenida">
+	                        <label for="observacionTarea">Observaciones</label>
+	                        <textarea name="" id="observacionTarea" class="form-control" rows="3" required="required"></textarea>
+
+	                    </div>
+                    </div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+					<button type="button" class="btn btn-primary" onclick="savePluckingWorkStudent();" data-dismiss="modal">Publicar</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

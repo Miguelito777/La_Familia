@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="UTF-8">
+        <title>Estudiantes</title>
+        <link rel="stylesheet" href="css/bootstrap.css">
+
+        <link rel="stylesheet" href="css/jquery.fileupload.css">
+</head>
+<body>
+   <div class="container">
+      <div class="row bg-info">
+         <div class="col-xs-4">
+             <table class="table table-condensed ">
+               <thead>
+               </thead>
+               <tbody>
+                  <tr>
+                     <th>Estudiante:</th>
+                     <td id = "nombre"></td>
+                  </tr>
+               </tbody>
+            </table>
+         </div>
+         <div class="col-xs-4" id="menuPrincipal"></div>
+         <div class="col-xs-4" id="session">
+            
+          </div>
+       </div>
+
+    <div class="row">
+        <div class="col-xs-4">
+            <img src="images/headindex.png" class="img-responsive" alt="Responsive image">
+        </div>
+<div class="col-xs-8">
+<h1>BIENVENIDOS</h1><br>
+                                        <p class="lead">Fecha: <div id="dia"></div><div id="mes"></div><div id="anio"></div></p>
+                                        <script>
+                                                var date = new Date();
+                                                var anio = date.getFullYear();
+                                                var mes = (date.getMonth() +1);
+                                                var dia = date.getDate();
+                                                document.getElementById('dia').innerHTML = dia;
+                                                document.getElementById('anio').innerHTML = "del "+anio;
+                                                switch(mes) {
+                                                        case 1:
+                                                        document.getElementById('mes').innerHTML = 'enero';
+                                                        break;
+                                                        case 2:
+                                                        document.getElementById('mes').innerHTML = 'febrero';
+                                                        break;
+                                                        case 3:
+                                                        document.getElementById('mes').innerHTML = 'marzo';
+                                                        break;
+                                                        case 4:
+                                                        document.getElementById('mes').innerHTML = 'abril';
+                                                        break;
+                                                        case 5:
+                                                        document.write('mayo');
+                                                        break;
+                                                        case 6:
+							document.getElementById('mes').innerHTML = 'Junio';
+                                                        break;
+                                                        case 7:
+                                                        document.getElementById('mes').innerHTML = 'julio';
+                                                        break;
+                                                        case 8:
+                                                        document.getElementById('mes').innerHTML = 'agosto';
+                                                        break;
+                                                        case 9:
+                                                        document.getElementById('mes').innerHTML = 'septiembre';
+                                                        break;
+                                                        case 10:
+                                                        document.getElementById('mes').innerHTML = 'octubre';
+                                                        break;
+                                                }
+                                                
+                                        </script>
+
+</div>
+</div>
+    <div class="row">
+                    <div class="col-xs-4 bg-info">
+                        <p class="lead" >Asignacion</p>
+                        <label for="tituloTarea">Titulo</label>
+                        <div id="tituloTarea"></div>
+                        <br>
+                        <label for="fechaAsignada">Fecha Asignada</label>
+                        <div id="fechaAsignada"></div>
+                        <br>
+                    </div>
+                    <div class="col-xs-4 bg-warning" >
+                        <p class="lead" >Entrega</p>
+                        <label for="fechaMaxima">Fecha maxima</label>
+                        <div id="fechaMaxima"></div>
+                        <br>
+                        <label for="horaMaxima">Hora maxima</label>
+                        <div id="horaMaxima"></div>
+                        <br>
+                        <label for="file">Archivo</label>
+                        <div id="file"></div>
+                    </div>
+                    <div class="col-xs-4 bg-success" >
+                        <p class="lead">Calificacion</p>
+                        <label for="puntuacionTarea">Puntuacion Maxima</label>
+                        <div id="puntuacionTarea"></div>
+                        <label for="puntuacionObtenida">Puntuacion Obtenida</label>
+                        <div id="puntuacionObtenida"></div>
+                        <label for="observacionTarea">Observaciones</label>
+                        <div id="observacionTarea"></div><br>
+                    </div>
+    </div>
+    <div class="row">
+        <label for="descripcionTarea">Descripcion</label>
+            <div id="descripcionTarea"></div>
+    </div>
+    <div class="row" id="upFile">
+                        <br>
+                        <span class='btn btn-success fileinput-button'><i class='glyphicon glyphicon-plus'></i><span>Subir tarea...</span><input id='fileupload' type='file' name='files[]' multiple></span>
+                        <br><br>
+                            <!-- The global progress bar -->
+                            <div id="progress" class="progress">
+                            <div class="progress-bar progress-bar-success"></div>
+                            </div>
+                            <!-- The container for the uploaded files -->
+                            <div id="files" class="files"></div>
+    </div>
+    <br><br>
+    <div class="row" style="text-align:center;">
+        <p >init web apps y redes totonicapan</p>
+    </div>
+</div>
+<script>
+$(function () {
+$('#myTab a:last').tab('show')
+})
+</script>
+<script type="text/javascript" src="js/jquery-2.1.1.js"></script>
+<script type="text/javascript" src="js/vendor/jquery.ui.widget.js"></script>
+<script type="text/javascript" src="js/jquery.iframe-transport.js"></script>
+<script type="text/javascript" src="js/jquery.fileupload.js"></script>
+<script type="text/javascript" src="js/bootstrap.js"></script>
+<script type="text/javascript" src="js/modelo.js"></script>
+<script type="text/javascript" src="js/controlador.js"></script>
+<script type="text/javascript" src="js/modeloV2.js"></script>
+<script type="text/javascript" src="js/controladorV2.js"></script>
+<script>
+    cargarEstudiante();
+    getDetailWork();
+</script>
+
+
+<script>
+/*jslint unparam: true */
+/*global window, $ */
+$(function () {
+    'use strict';
+    // Change this to the location of your server-side upload handler:
+    var url = window.location.hostname === 'blueimp.github.io' ?
+                '//jquery-file-upload.appspot.com/' : 'server/php/';
+    $('#fileupload').fileupload({
+        url: url,
+        dataType: 'json',
+        done: function (e, data) {
+            $.each(data.result.files, function (index, file) {
+                $('<p/>').text(file.name).appendTo('#files');
+                var path = file.name;
+                setDigitalWork(path);
+            });
+        },
+        progressall: function (e, data) {
+            var progress = parseInt(data.loaded / data.total * 100, 10);
+            $('#progress .progress-bar').css(
+                'width',
+                progress + '%'
+            );
+        }
+    }).prop('disabled', !$.support.fileInput)
+        .parent().addClass($.support.fileInput ? undefined : 'disabled');
+});
+</script>
+
+</body>
+</html>
